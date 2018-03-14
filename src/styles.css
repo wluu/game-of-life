@@ -1,1 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+  /* this will help with specifying an element's width i.e. padding + border + margin will be included in the width */
+  box-sizing: border-box;
+}
+
+html {
+  margin: 1% auto;
+  width: 900px;
+}

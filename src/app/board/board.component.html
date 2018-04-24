@@ -1,8 +1,7 @@
-<!-- TODO -->
-<!-- need to loop through specified number of columns and rows specified from component class -->
-<!-- each cell will be a div element -->
-<!-- grid-column as the x-coordinate and grid-row as the y-coordinate -->
-
-<div class="board-container" [ngStyle]="boardDimensions">
-  stub
+<div class="board-container" [ngStyle]="boardDimensionsStyle">
+  <ng-container *ngFor="let row of boardMatrix">
+    <ng-container *ngFor="let cellStyle of row">
+      <div [ngStyle]="cellStyle">{{ cellStyle['grid-row'] }}</div>
+    </ng-container>
+  </ng-container>
 </div>

@@ -6,10 +6,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent implements OnInit {
-  title = 'game of life';
 
-  constructor() {}
+  boardWidth: number;
+  boardHeight: number;
+  boardDimensions: any;
 
-  ngOnInit() {}
+  constructor() {
+    // NOTE: manually setting the boardWidth and boardHeight for now
+    this.boardWidth = 50;
+    this.boardHeight = 30;
+  }
+
+  ngOnInit() {
+    this.boardDimensions = {
+      'grid-template-columns': `repeat(${this.boardWidth}, 30px)`,
+      'grid-template-rows': `repeat(${this.boardHeight}, 30px)`
+    };
+  }
 
 }

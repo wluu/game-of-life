@@ -14,6 +14,7 @@ Conway's Game of Life
 Going to break this down into smaller chunks:
 
 - [x] Make the board
+  - [ ] Forgot to add the borders to the board
 - [ ] Add event listeners to each cell in the board
   - Change color of any given cell when clicking on them
 - [ ] Work on game of life rules

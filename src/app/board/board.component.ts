@@ -27,10 +27,28 @@ export class BoardComponent implements OnInit {
       this.boardMatrix[row] = new Array(this.boardWidth);
 
       for (let col = 0; col < this.boardWidth; col++) {
+        let borderStyle = '';
+
+        // creating cell borders from left to right on each row; starting point (0, 0)
+        if (row === 0 && col === 0) {
+          // starting at (0, 0), all the borders should be solid
+          borderStyle = 'solid';
+        } else if (row === 0) {
+          // after (0, 0), all cells on the first row will have:
+          borderStyle = 'solid solid solid none';
+        } else if (col === 0) {
+          // moving to the next rows, the cells in the first column will have:
+          borderStyle = 'none solid solid solid';
+        } else {
+          // and the cells after the after column will have:
+          borderStyle = 'none solid solid none';
+        }
+
         this.boardMatrix[row][col] = {
           // index starts at 1 for grid layout
           'grid-row': row + 1,
-          'grid-column': col + 1
+          'grid-column': col + 1,
+          'border-style': borderStyle
         };
       }
     }

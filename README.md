@@ -15,7 +15,7 @@ Going to break this down into smaller chunks:
 
 - [x] Make the board
   - [x] Forgot to add the borders to the board
-- [ ] Add event listeners to each cell in the board
+- [x] Add event listeners to each cell in the board
   - Change color of any given cell when clicking on them
 - [ ] Work on game of life rules
   - Flesh this part out when deep in it; will need to hook up the rules to the board

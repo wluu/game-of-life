@@ -54,4 +54,9 @@ export class BoardComponent implements OnInit {
     }
   }
 
+  changeColor($event) {
+    const backgroundColor = $event.target.style.backgroundColor;
+    $event.target.style.backgroundColor = (!backgroundColor) ? 'red' : '';
+  }
+
 }

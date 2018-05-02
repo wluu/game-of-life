@@ -1,7 +1,7 @@
-<div class="board-container" [ngStyle]="boardDimensionsStyle">
-  <ng-container *ngFor="let row of boardMatrix">
+<div class="board-container" [ngStyle]="boardDimensions">
+  <ng-container *ngFor="let row of cellsStyle">
     <ng-container *ngFor="let cellStyle of row">
-      <div [ngStyle]="cellStyle" (click)="changeColor($event)">{{ cellStyle['grid-row'] }}</div>
+      <div [ngStyle]="cellStyle" (click)="updateBoard($event)"></div>
     </ng-container>
   </ng-container>
 </div>

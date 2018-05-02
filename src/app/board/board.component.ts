@@ -1,30 +1,36 @@
 import { Component, OnInit } from '@angular/core';
 
+import { TrackingBoardService } from '../tracking-board.service';
+
 @Component({
   selector: 'life-board',
   templateUrl: './board.component.html',
-  styleUrls: ['./board.component.css']
+  styleUrls: ['./board.component.css'],
+  providers: [TrackingBoardService]
 })
 export class BoardComponent implements OnInit {
 
   boardWidth: number;
   boardHeight: number;
-  boardMatrix: any[][];
-  boardDimensionsStyle: any;
+  cellsStyle: any[][];
+  boardDimensions: any;
+
+  constructor(private trackingBoard: TrackingBoardService) {}
 
   ngOnInit() {
     // NOTE: manually setting the boardWidth and boardHeight for now
     this.boardWidth = 50;
     this.boardHeight = 30;
-    this.boardMatrix = [];
+    this.cellsStyle = [];
 
-    this.boardDimensionsStyle = {
+    this.boardDimensions = {
       'grid-template-columns': `repeat(${this.boardWidth}, 30px)`,
       'grid-template-rows': `repeat(${this.boardHeight}, 30px)`
     };
 
     for (let row = 0; row < this.boardHeight; row++) {
-      this.boardMatrix[row] = new Array(this.boardWidth);
+      this.cellsStyle[row] = new Array(this.boardWidth);
+      this.trackingBoard.addNewRow(row, this.boardWidth);
 
       for (let col = 0; col < this.boardWidth; col++) {
         let borderStyle = '';
@@ -44,7 +50,7 @@ export class BoardComponent implements OnInit {
           borderStyle = 'none solid solid none';
         }
 
-        this.boardMatrix[row][col] = {
+        this.cellsStyle[row][col] = {
           // index starts at 1 for grid layout
           'grid-row': row + 1,
           'grid-column': col + 1,
@@ -54,9 +60,23 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  changeColor($event) {
+  updateBoard($event) {
     const backgroundColor = $event.target.style.backgroundColor;
-    $event.target.style.backgroundColor = (!backgroundColor) ? 'red' : '';
+
+    const cellStyleInfo = {
+      row: <string>$event.target.style.gridRow,
+      col: <string>$event.target.style.gridColumn,
+      mark: false
+    };
+
+    if (!backgroundColor) {
+        $event.target.style.backgroundColor = 'red';
+        cellStyleInfo.mark = true;
+    } else {
+        $event.target.style.backgroundColor = '';
+    }
+
+    this.trackingBoard.markCell(cellStyleInfo);
   }
 
 }

@@ -18,7 +18,8 @@ Going to break this down into smaller chunks:
 - [x] Add event listeners to each cell in the board
   - Change color of any given cell when clicking on them
 - [ ] Work on game of life rules
-  - Flesh this part out when deep in it; will need to hook up the rules to the board
+  - [ ] Add the life rules
+  - [ ] Mock the controls to make sure the rules are correct
 - [ ] Add the controls
   - Start with text to substitute for the image of each control
   - Flesh this part as well when deep in it; will need to hook this part to the rules and the board

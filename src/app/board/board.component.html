@@ -1,7 +1,10 @@
 <div class="board-container" [ngStyle]="boardDimensions">
   <ng-container *ngFor="let row of cellsStyle">
     <ng-container *ngFor="let cellStyle of row">
-      <div [ngStyle]="cellStyle" (click)="updateBoard($event)"></div>
+      <div [ngStyle]="cellStyle" (click)="updateCell($event)"></div>
     </ng-container>
   </ng-container>
 </div>
+
+<!-- NOTE: temporary! used only to test the rules -->
+<div (click)="fooTest()">FOO TEST</div>

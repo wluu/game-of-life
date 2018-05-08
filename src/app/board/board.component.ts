@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 
-import { TrackingBoardService } from '../tracking-board.service';
+import { LifeService } from '../life.service';
+import { TrackingService } from '../tracking.service';
 
 @Component({
   selector: 'life-board',
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.css'],
-  providers: [TrackingBoardService]
+  providers: [TrackingService, LifeService]
 })
 export class BoardComponent implements OnInit {
 
@@ -15,7 +16,10 @@ export class BoardComponent implements OnInit {
   cellsStyle: any[][];
   boardDimensions: any;
 
-  constructor(private trackingBoard: TrackingBoardService) {}
+  constructor(
+    private tracking: TrackingService,
+    private life: LifeService
+  ) {}
 
   ngOnInit() {
     // NOTE: manually setting the boardWidth and boardHeight for now
@@ -30,7 +34,7 @@ export class BoardComponent implements OnInit {
 
     for (let row = 0; row < this.boardHeight; row++) {
       this.cellsStyle[row] = new Array(this.boardWidth);
-      this.trackingBoard.addNewRow(row, this.boardWidth);
+      this.tracking.addRow(row, this.boardWidth);
 
       for (let col = 0; col < this.boardWidth; col++) {
         let borderStyle = '';
@@ -60,7 +64,7 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  updateBoard($event) {
+  updateCell($event: any) {
     const backgroundColor = $event.target.style.backgroundColor;
 
     const cellStyleInfo = {
@@ -76,7 +80,12 @@ export class BoardComponent implements OnInit {
         $event.target.style.backgroundColor = '';
     }
 
-    this.trackingBoard.markCell(cellStyleInfo);
+    this.tracking.markCell(cellStyleInfo);
   }
 
+  // NOTE: used for testing the rules!
+  fooTest() {
+    this.life.applyRules(this.tracking.board);
+    // TODO: at the template level, will need to listen to an event from LifeService so we know how to update the board
+  }
 }

@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class TrackingBoardService {
+export class TrackingService {
 
-  private trackingBoard: boolean[][];
+  board: boolean[][];
 
   constructor() {
-    this.trackingBoard = [];
+    this.board = [];
   }
 
   // initializing the tracking board
-  addNewRow(whichRow: number, columns: number) {
-    this.trackingBoard[whichRow] = new Array(columns);
+  addRow(whichRow: number, columns: number) {
+    this.board[whichRow] = new Array(columns);
   }
 
   /*
@@ -27,6 +27,6 @@ export class TrackingBoardService {
     // the grid layout starts index at 1
     const row = parseInt(cellStyleInfo.row.split('/')[0].trim(), 10) - 1;
     const col = parseInt(cellStyleInfo.col.split('/')[0].trim(), 10) - 1;
-    this.trackingBoard[row][col] = cellStyleInfo.mark;
+    this.board[row][col] = cellStyleInfo.mark;
   }
 }

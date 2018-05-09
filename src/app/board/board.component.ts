@@ -85,7 +85,8 @@ export class BoardComponent implements OnInit {
 
   // NOTE: used for testing the rules!
   fooTest() {
-    this.life.applyRules(this.tracking.board);
+    this.life.useBoard(this.tracking.board);
+    this.life.applyRules();
     // TODO: at the template level, will need to listen to an event from LifeService so we know how to update the board
   }
 }

@@ -19,7 +19,7 @@ Going to break this down into smaller chunks:
   - Change color of any given cell when clicking on them
 - [ ] Work on game of life rules
   - [ ] Add the life rules
-  - [ ] Mock the controls to make sure the rules are correct
+  - [x] Mock the control to make sure the rules are correct
 - [ ] Add the controls
   - Start with text to substitute for the image of each control
   - Flesh this part as well when deep in it; will need to hook this part to the rules and the board

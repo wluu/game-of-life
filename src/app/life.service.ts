@@ -30,17 +30,28 @@ export class LifeService {
   }
 
   applyRules() {
+    const newGeneration = [];
+
     for (let r = 0; r < this.NUM_ROWS; r++) {
       for (let c = 0; c < this.NUM_COLS; c++) {
         const liveCell = this.BOARD[r][c];
         if (liveCell) {
-          console.log('r:', r, ', c:', c);
-          console.log(this.anyLiveNeighborsAt(r, c));
-          console.log();
-
-          // TODO: 1. Any live cell with fewer than two live neighbors dies, as if caused by under population.
-          // TODO: 2. Any live cell with two or three live neighbors lives on to the next generation.
-          // TODO: 3. Any live cell with more than three live neighbors dies, as if by overpopulation.
+          // Any live cell with fewer than two live neighbors dies, as if caused by under population.
+          // Any live cell with more than three live neighbors dies, as if by overpopulation.
+          if (this.anyLiveNeighborsAt(r, c) < 2 || this.anyLiveNeighborsAt(r, c) > 3) {
+            newGeneration.push({
+              row: r,
+              col: c,
+              alive: false
+            });
+          } else {
+            // Any live cell with two or three live neighbors lives on to the next generation.
+            newGeneration.push({
+              row: r,
+              col: c,
+              alive: true
+            });
+          }
 
           // TODO: 4. for every live cell, check its EMPTY neighbor and apply the "resurrection" rule:
           // Any dead cell with exactly three live neighbors becomes a live cell
@@ -49,10 +60,11 @@ export class LifeService {
     }
 
     // TODO: emit the tracking board data which will have the updated board
+    // emit newGeneration
   }
 
-  private anyLiveNeighborsAt(r: number, c: number): any[] {
-    const liveNeighbors = [];
+  private anyLiveNeighborsAt(r: number, c: number): number {
+    let liveNeighbors = 0;
 
     this.NEIGHBORS.forEach((neighborCoord) => {
       const neighborRow = r + neighborCoord.row;
@@ -62,7 +74,7 @@ export class LifeService {
         (neighborCol > -1 && neighborCol < this.NUM_COLS)
       ) {
         if (this.BOARD[neighborRow][neighborCol]) {
-          liveNeighbors.push({row: neighborRow, col: neighborCol});
+          liveNeighbors++;
         }
       }
     });

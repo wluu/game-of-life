@@ -2,7 +2,7 @@
   <ng-container *ngFor="let row of cellsStyle">
     <ng-container *ngFor="let cellStyle of row">
       <!-- NOTE: only setting the string interpolation for debugging purposes -->
-      <div [ngStyle]="cellStyle" (click)="updateCell($event)">{{ cellStyle['grid-row'] }},{{ cellStyle['grid-column'] }}</div>
+      <div [ngStyle]="cellStyle" (click)="updateCell($event)">{{ cellStyle['grid-row'] - 1 }},{{ cellStyle['grid-column'] - 1 }}</div>
     </ng-container>
   </ng-container>
 </div>

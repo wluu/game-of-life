@@ -54,7 +54,8 @@ export class LifeService {
           }
 
           // TODO: 4. for every live cell, check its EMPTY neighbor and apply the "resurrection" rule:
-          // Any dead cell with exactly three live neighbors becomes a live cell
+          // Any dead cell with exactly three live neighbors becomes a live cell; add to newGeneration
+          // NOTE: will need a matrix to track which cell is being checked so we don't need to check the same cells over
         }
       }
     }

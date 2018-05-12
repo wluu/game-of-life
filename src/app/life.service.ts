@@ -35,10 +35,13 @@ export class LifeService {
         const liveCell = this.tracking.board[r][c];
 
         if (liveCell) {
-          // Any live cell with fewer than two live neighbors dies, as if caused by under population.
-          // Any live cell with more than three live neighbors dies, as if by overpopulation.
+          // NOTE: used for debugging
+          console.log('r:', r, ', c:', c);
+
           const liveNeighbors = this.anyLiveNeighborsAt(r, c);
 
+          // Any live cell with fewer than two live neighbors dies, as if caused by under population.
+          // Any live cell with more than three live neighbors dies, as if by overpopulation.
           if (liveNeighbors < 2 || liveNeighbors > 3) {
             newGeneration.push({
               row: r,
@@ -68,19 +71,37 @@ export class LifeService {
   private anyLiveNeighborsAt(r: number, c: number): number {
     let liveNeighbors = 0;
 
+    // NOTE: used for debugging
+    const temp = [];
+
     this.neighbors.forEach((neighborCoord) => {
       const neighborRow = r + neighborCoord.row;
       const neighborCol = c + neighborCoord.col;
 
-      if ((neighborRow > -1 && neighborRow < this.tracking.totalRows) &&
-          (neighborCol > -1 && neighborCol < this.tracking.totalCols)) {
-        if (this.tracking.board[neighborRow][neighborCol]) {
+      if (this.cellWithinBorders(neighborRow, neighborCol)) {
+        const neighborIsAlive = this.tracking.board[neighborRow][neighborCol];
+
+        if (neighborIsAlive) {
           liveNeighbors++;
+
+          // NOTE: used for debugging
+          temp.push({
+            row: neighborRow,
+            col: neighborCol,
+          });
+
         }
       }
     });
 
+    // NOTE: used for debugging
+    console.log(temp);
+
     return liveNeighbors;
+  }
+
+  private cellWithinBorders(r: number, c: number) {
+    return (r > -1 && r < this.tracking.totalRows) && (c > -1 && c < this.tracking.totalCols);
   }
 
 }

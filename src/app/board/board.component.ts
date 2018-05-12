@@ -19,14 +19,14 @@ export class BoardComponent implements OnInit {
   constructor(
     private tracking: TrackingService,
     private life: LifeService
-  ) {}
-
-  ngOnInit() {
+  ) {
     // NOTE: manually setting the boardWidth and boardHeight for now
     this.boardHeight = 30;
     this.boardWidth = 50;
     this.cellsStyle = [];
+  }
 
+  ngOnInit() {
     this.tracking.initBoard(30, 50);
 
     this.boardDimensionStyle = {

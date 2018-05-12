@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class TrackingService {
 
+  totalRows: number;
+  totalCols: number;
   board: boolean[][];
 
   constructor() {
@@ -10,8 +12,15 @@ export class TrackingService {
   }
 
   // initializing the tracking board
-  addRow(whichRow: number, columns: number) {
-    this.board[whichRow] = new Array(columns);
+  initBoard(rows: number, cols: number) {
+    this.totalRows = rows;
+    this.totalCols = cols;
+
+    for (let r = 0; r < this.totalRows; r++) {
+      for (let c = 0; c < this.totalCols; c++) {
+        this.board[r] = new Array(this.totalCols);
+      }
+    }
   }
 
   /*

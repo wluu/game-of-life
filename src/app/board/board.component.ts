@@ -11,10 +11,10 @@ import { TrackingService } from '../tracking.service';
 })
 export class BoardComponent implements OnInit {
 
-  boardWidth: number;
-  boardHeight: number;
-  cellsStyle: any[][];
-  boardDimensions: any;
+  private boardWidth: number;
+  private boardHeight: number;
+  private cellsStyle: any[][];
+  private boardDimensionStyle: any;
 
   constructor(
     private tracking: TrackingService,
@@ -23,18 +23,19 @@ export class BoardComponent implements OnInit {
 
   ngOnInit() {
     // NOTE: manually setting the boardWidth and boardHeight for now
-    this.boardWidth = 50;
     this.boardHeight = 30;
+    this.boardWidth = 50;
     this.cellsStyle = [];
 
-    this.boardDimensions = {
+    this.tracking.initBoard(30, 50);
+
+    this.boardDimensionStyle = {
       'grid-template-columns': `repeat(${this.boardWidth}, 30px)`,
       'grid-template-rows': `repeat(${this.boardHeight}, 30px)`
     };
 
     for (let row = 0; row < this.boardHeight; row++) {
       this.cellsStyle[row] = new Array(this.boardWidth);
-      this.tracking.addRow(row, this.boardWidth);
 
       for (let col = 0; col < this.boardWidth; col++) {
         let borderStyle = '';
@@ -85,7 +86,7 @@ export class BoardComponent implements OnInit {
 
   // NOTE: used for testing the rules!
   fooTest() {
-    this.life.useBoard(this.tracking.board);
+    this.life.useTrackingService(this.tracking);
     this.life.applyRules();
     // TODO: at the template level, will need to listen to an event from LifeService so we know how to update the board
   }

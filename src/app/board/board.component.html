@@ -1,4 +1,4 @@
-<div class="board-container" [ngStyle]="boardDimensions">
+<div class="board-container" [ngStyle]="boardDimensionStyle">
   <ng-container *ngFor="let row of cellsStyle">
     <ng-container *ngFor="let cellStyle of row">
       <!-- NOTE: only setting the string interpolation for debugging purposes -->

@@ -2,16 +2,16 @@
 
 import { Injectable } from '@angular/core';
 
+import { TrackingService } from './tracking.service';
+
 @Injectable()
 export class LifeService {
 
-  private BOARD: boolean[][];
-  private NEIGHBORS: any[];
-  private NUM_ROWS: number;
-  private NUM_COLS: number;
+  private neighbors: any[];
+  private tracking: TrackingService;
 
   constructor() {
-    this.NEIGHBORS = [
+    this.neighbors = [
       {row: -1, col: -1}, // NW
       {row: -1, col: 0},  // N
       {row: -1, col: 1},  // NE
@@ -23,22 +23,23 @@ export class LifeService {
     ];
   }
 
-  useBoard(b: boolean[][]) {
-    this.BOARD = b;
-    this.NUM_ROWS = b.length;
-    this.NUM_COLS = b[0].length;
+  useTrackingService(t: TrackingService) {
+    this.tracking = t;
   }
 
   applyRules() {
     const newGeneration = [];
 
-    for (let r = 0; r < this.NUM_ROWS; r++) {
-      for (let c = 0; c < this.NUM_COLS; c++) {
-        const liveCell = this.BOARD[r][c];
+    for (let r = 0; r < this.tracking.totalRows; r++) {
+      for (let c = 0; c < this.tracking.totalCols; c++) {
+        const liveCell = this.tracking.board[r][c];
+
         if (liveCell) {
           // Any live cell with fewer than two live neighbors dies, as if caused by under population.
           // Any live cell with more than three live neighbors dies, as if by overpopulation.
-          if (this.anyLiveNeighborsAt(r, c) < 2 || this.anyLiveNeighborsAt(r, c) > 3) {
+          const liveNeighbors = this.anyLiveNeighborsAt(r, c);
+
+          if (liveNeighbors < 2 || liveNeighbors > 3) {
             newGeneration.push({
               row: r,
               col: c,
@@ -67,14 +68,13 @@ export class LifeService {
   private anyLiveNeighborsAt(r: number, c: number): number {
     let liveNeighbors = 0;
 
-    this.NEIGHBORS.forEach((neighborCoord) => {
+    this.neighbors.forEach((neighborCoord) => {
       const neighborRow = r + neighborCoord.row;
       const neighborCol = c + neighborCoord.col;
-      if (
-        (neighborRow > -1 && neighborRow < this.NUM_ROWS) &&
-        (neighborCol > -1 && neighborCol < this.NUM_COLS)
-      ) {
-        if (this.BOARD[neighborRow][neighborCol]) {
+
+      if ((neighborRow > -1 && neighborRow < this.tracking.totalRows) &&
+          (neighborCol > -1 && neighborCol < this.tracking.totalCols)) {
+        if (this.tracking.board[neighborRow][neighborCol]) {
           liveNeighbors++;
         }
       }

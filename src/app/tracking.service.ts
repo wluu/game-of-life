@@ -18,7 +18,7 @@ export class TrackingService {
 
     for (let r = 0; r < this.totalRows; r++) {
       for (let c = 0; c < this.totalCols; c++) {
-        this.board[r] = new Array(this.totalCols);
+        this.board[r] = new Array(this.totalCols).fill(false);
       }
     }
   }

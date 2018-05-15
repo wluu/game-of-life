@@ -30,36 +30,53 @@ export class LifeService {
   applyRules() {
     const newGeneration = [];
 
-    for (let r = 0; r < this.tracking.totalRows; r++) {
-      for (let c = 0; c < this.tracking.totalCols; c++) {
-        const liveCell = this.tracking.board[r][c];
+    // matrix to track already checked dead cells; don't want to check again
+    const checkedDeadCells = this.tracking.board.map((someRow) => {
+      // slice clones the array row and the row in tracking.board will not be modified
+      return someRow.slice().fill(false);
+    });
+
+    for (let curRow = 0; curRow < this.tracking.totalRows; curRow++) {
+      for (let curCol = 0; curCol < this.tracking.totalCols; curCol++) {
+        const liveCell = this.tracking.board[curRow][curCol];
 
         if (liveCell) {
-          // NOTE: used for debugging
-          console.log('r:', r, ', c:', c);
-
-          const liveNeighbors = this.anyLiveNeighborsAt(r, c);
+          let liveNeighbors = this.anyLiveNeighborsAt(curRow, curCol);
 
           // Any live cell with fewer than two live neighbors dies, as if caused by under population.
           // Any live cell with more than three live neighbors dies, as if by overpopulation.
           if (liveNeighbors < 2 || liveNeighbors > 3) {
             newGeneration.push({
-              row: r,
-              col: c,
+              row: curRow,
+              col: curCol,
               alive: false
             });
           } else {
             // Any live cell with two or three live neighbors lives on to the next generation.
             newGeneration.push({
-              row: r,
-              col: c,
+              row: curRow,
+              col: curCol,
               alive: true
             });
           }
 
-          // TODO: 4. for every live cell, check its EMPTY neighbor and apply the "resurrection" rule:
-          // Any dead cell with exactly three live neighbors becomes a live cell; add to newGeneration
-          // NOTE: will need a matrix to track which cell is being checked so we don't need to check the same cells over
+          this.getDeadNeighborsAt(curRow, curCol).forEach((deadNeighbor) => {
+            const cellIsChecked = checkedDeadCells[deadNeighbor.row][deadNeighbor.col];
+
+            if (!cellIsChecked) {
+              checkedDeadCells[deadNeighbor.row][deadNeighbor.col] = true;
+              liveNeighbors = this.anyLiveNeighborsAt(deadNeighbor.row, deadNeighbor.col);
+
+              // Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
+              if (liveNeighbors === 3) {
+                newGeneration.push({
+                  row: deadNeighbor.row,
+                  col: deadNeighbor.col,
+                  alive: true
+                });
+              }
+            }
+          });
         }
       }
     }
@@ -71,36 +88,45 @@ export class LifeService {
   private anyLiveNeighborsAt(r: number, c: number): number {
     let liveNeighbors = 0;
 
-    // NOTE: used for debugging
-    const temp = [];
+    this.neighbors.forEach((neighborCoord) => {
+      const neighborRow = r + neighborCoord.row;
+      const neighborCol = c + neighborCoord.col;
+
+      if (this.isWithinBorders(neighborRow, neighborCol)) {
+        const neighborIsAlive = this.tracking.board[neighborRow][neighborCol];
+
+        if (neighborIsAlive) {
+          liveNeighbors++;
+        }
+      }
+    });
+
+    return liveNeighbors;
+  }
+
+  private getDeadNeighborsAt(r: number, c: number): any[] {
+    const deadNeighbors = [];
 
     this.neighbors.forEach((neighborCoord) => {
       const neighborRow = r + neighborCoord.row;
       const neighborCol = c + neighborCoord.col;
 
-      if (this.cellWithinBorders(neighborRow, neighborCol)) {
+      if (this.isWithinBorders(neighborRow, neighborCol)) {
         const neighborIsAlive = this.tracking.board[neighborRow][neighborCol];
 
-        if (neighborIsAlive) {
-          liveNeighbors++;
-
-          // NOTE: used for debugging
-          temp.push({
+        if (!neighborIsAlive) {
+          deadNeighbors.push({
             row: neighborRow,
             col: neighborCol,
           });
-
         }
       }
     });
 
-    // NOTE: used for debugging
-    console.log(temp);
-
-    return liveNeighbors;
+    return deadNeighbors;
   }
 
-  private cellWithinBorders(r: number, c: number) {
+  private isWithinBorders(r: number, c: number) {
     return (r > -1 && r < this.tracking.totalRows) && (c > -1 && c < this.tracking.totalCols);
   }
 

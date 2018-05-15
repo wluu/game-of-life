@@ -41,6 +41,9 @@ export class LifeService {
         const liveCell = this.tracking.board[curRow][curCol];
 
         if (liveCell) {
+          // NOTE: used for debugging
+          console.log('curRow:', curRow, ', curCol:', curCol);
+
           let liveNeighbors = this.anyLiveNeighborsAt(curRow, curCol);
 
           // Any live cell with fewer than two live neighbors dies, as if caused by under population.
@@ -61,9 +64,15 @@ export class LifeService {
           }
 
           this.getDeadNeighborsAt(curRow, curCol).forEach((deadNeighbor) => {
+            // NOTE: used for debugging
+            console.log('deadNeighbor.row:', deadNeighbor.row, ', deadNeighbor.col:', deadNeighbor.col);
+
             const cellIsChecked = checkedDeadCells[deadNeighbor.row][deadNeighbor.col];
 
             if (!cellIsChecked) {
+              // NOTE: used for debugging
+              console.log('mark cell');
+
               checkedDeadCells[deadNeighbor.row][deadNeighbor.col] = true;
               liveNeighbors = this.anyLiveNeighborsAt(deadNeighbor.row, deadNeighbor.col);
 
@@ -88,18 +97,14 @@ export class LifeService {
   private anyLiveNeighborsAt(r: number, c: number): number {
     let liveNeighbors = 0;
 
-    this.neighbors.forEach((neighborCoord) => {
-      const neighborRow = r + neighborCoord.row;
-      const neighborCol = c + neighborCoord.col;
-
-      if (this.isWithinBorders(neighborRow, neighborCol)) {
-        const neighborIsAlive = this.tracking.board[neighborRow][neighborCol];
-
-        if (neighborIsAlive) {
-          liveNeighbors++;
-        }
+    this.checkNeighborsAt(r, c, (info) => {
+      if (info.neighborIsAlive) {
+        liveNeighbors++;
       }
     });
+
+    // NOTE: used for debugging
+    console.log('liveNeighbors:', liveNeighbors);
 
     return liveNeighbors;
   }
@@ -107,23 +112,34 @@ export class LifeService {
   private getDeadNeighborsAt(r: number, c: number): any[] {
     const deadNeighbors = [];
 
+    this.checkNeighborsAt(r, c, (info) => {
+      if (!info.neighborIsAlive) {
+        deadNeighbors.push({
+          row: info.neighborRow,
+          col: info.neighborCol,
+        });
+      }
+    });
+
+    // NOTE: used for debugging
+    console.log('deadNeighbors:', deadNeighbors);
+
+    return deadNeighbors;
+  }
+
+  private checkNeighborsAt(r: number, c: number, cb: (info: any) => void) {
     this.neighbors.forEach((neighborCoord) => {
       const neighborRow = r + neighborCoord.row;
       const neighborCol = c + neighborCoord.col;
 
       if (this.isWithinBorders(neighborRow, neighborCol)) {
-        const neighborIsAlive = this.tracking.board[neighborRow][neighborCol];
-
-        if (!neighborIsAlive) {
-          deadNeighbors.push({
-            row: neighborRow,
-            col: neighborCol,
-          });
-        }
+        cb({
+          neighborIsAlive: this.tracking.board[neighborRow][neighborCol],
+          neighborRow: neighborRow,
+          neighborCol: neighborCol
+        });
       }
     });
-
-    return deadNeighbors;
   }
 
   private isWithinBorders(r: number, c: number) {

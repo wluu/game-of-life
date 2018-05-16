@@ -32,7 +32,7 @@ export class LifeService {
 
     // matrix to track already checked dead cells; don't want to check again
     const checkedDeadCells = this.tracking.board.map((someRow) => {
-      // slice clones the array row and the row in tracking.board will not be modified
+      // slice clones the array row and the row in tracking.board will not be modified or referenced
       return someRow.slice().fill(false);
     });
 
@@ -97,7 +97,7 @@ export class LifeService {
   private anyLiveNeighborsAt(r: number, c: number): number {
     let liveNeighbors = 0;
 
-    this.checkNeighborsAt(r, c, (info) => {
+    this.checkNeighborsAt(r, c, (info: any) => {
       if (info.neighborIsAlive) {
         liveNeighbors++;
       }
@@ -112,7 +112,7 @@ export class LifeService {
   private getDeadNeighborsAt(r: number, c: number): any[] {
     const deadNeighbors = [];
 
-    this.checkNeighborsAt(r, c, (info) => {
+    this.checkNeighborsAt(r, c, (info: any) => {
       if (!info.neighborIsAlive) {
         deadNeighbors.push({
           row: info.neighborRow,
@@ -135,8 +135,8 @@ export class LifeService {
       if (this.isWithinBorders(neighborRow, neighborCol)) {
         cb({
           neighborIsAlive: this.tracking.board[neighborRow][neighborCol],
-          neighborRow: neighborRow,
-          neighborCol: neighborCol
+          neighborRow,
+          neighborCol
         });
       }
     });

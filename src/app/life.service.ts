@@ -8,6 +8,7 @@ import { TrackingService } from './tracking.service';
 export class LifeService {
 
   private neighbors: any[];
+  private newGeneration: any[];
   private tracking: TrackingService;
 
   constructor() {
@@ -28,7 +29,7 @@ export class LifeService {
   }
 
   applyRules() {
-    const newGeneration = [];
+    this.newGeneration = [];
 
     // matrix to track already checked dead cells; don't want to check again
     const checkedDeadCells = this.tracking.board.map((someRow) => {
@@ -49,14 +50,14 @@ export class LifeService {
           // Any live cell with fewer than two live neighbors dies, as if caused by under population.
           // Any live cell with more than three live neighbors dies, as if by overpopulation.
           if (liveNeighbors < 2 || liveNeighbors > 3) {
-            newGeneration.push({
+            this.newGeneration.push({
               row: curRow,
               col: curCol,
               alive: false
             });
           } else {
             // Any live cell with two or three live neighbors lives on to the next generation.
-            newGeneration.push({
+            this.newGeneration.push({
               row: curRow,
               col: curCol,
               alive: true
@@ -78,7 +79,7 @@ export class LifeService {
 
               // Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
               if (liveNeighbors === 3) {
-                newGeneration.push({
+                this.newGeneration.push({
                   row: deadNeighbor.row,
                   col: deadNeighbor.col,
                   alive: true
@@ -89,9 +90,13 @@ export class LifeService {
         }
       }
     }
+  }
 
-    // TODO: emit the tracking board data which will have the updated board
-    // emit newGeneration
+  getNewGeneration(): any[] {
+    // NOTE: used for debugging
+    console.log('newGeneration:', this.newGeneration);
+
+    return this.newGeneration;
   }
 
   private anyLiveNeighborsAt(r: number, c: number): number {

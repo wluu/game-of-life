@@ -88,6 +88,8 @@ export class BoardComponent implements OnInit {
   fooTest() {
     this.life.useTrackingService(this.tracking);
     this.life.applyRules();
-    // TODO: at the template level, will need to listen to an event from LifeService so we know how to update the board
+
+    // TODO: use this to update the board with a new generation of cells
+    this.life.getNewGeneration();
   }
 }

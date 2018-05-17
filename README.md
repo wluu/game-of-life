@@ -20,7 +20,7 @@ Going to break this down into smaller chunks:
 - [x] Work on game of life rules
   - [x] Add the life rules
   - [x] Mock the control to make sure the rules are correct
-- [ ] Emit data to the board component so we can actually update the board with new data
+- [ ] ~~Emit data to the board component~~ Get data from life service so we can actually update the board with new data
   - Will need to create some form of game loop so the cells appear to be moving
 - [ ] Add the controls
   - Start with text to substitute for the image of each control

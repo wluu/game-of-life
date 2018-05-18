@@ -90,6 +90,6 @@ export class BoardComponent implements OnInit {
     this.life.applyRules();
 
     // TODO: use this to update the board with a new generation of cells
-    this.life.getNewGeneration();
+    console.log('newGeneration:', this.life.newGeneration);
   }
 }

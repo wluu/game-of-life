@@ -7,8 +7,9 @@ import { TrackingService } from './tracking.service';
 @Injectable()
 export class LifeService {
 
+  newGeneration: any[];
+
   private neighbors: any[];
-  private newGeneration: any[];
   private tracking: TrackingService;
 
   constructor() {
@@ -90,13 +91,6 @@ export class LifeService {
         }
       }
     }
-  }
-
-  getNewGeneration(): any[] {
-    // NOTE: used for debugging
-    console.log('newGeneration:', this.newGeneration);
-
-    return this.newGeneration;
   }
 
   private anyLiveNeighborsAt(r: number, c: number): number {

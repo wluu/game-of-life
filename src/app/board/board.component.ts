@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { LifeService } from '../life.service';
-import { TrackingService } from '../tracking.service';
+import { LifeService } from '../services/life.service';
+import { TrackingService } from '../services/tracking.service';
+import { CellInfo } from '../cell-info.interface';
 
 @Component({
   selector: 'life-board',
@@ -66,22 +67,22 @@ export class BoardComponent implements OnInit {
   }
 
   updateCell($event: any) {
-    const backgroundColor = $event.target.style.backgroundColor;
-
-    const cellStyleInfo = {
-      row: <string>$event.target.style.gridRow,
-      col: <string>$event.target.style.gridColumn,
-      mark: false
+    // the grid layout starts index at 1
+    const cellInfo = {
+      row: parseInt($event.target.style.gridRow.split('/')[0].trim(), 10) - 1,
+      col: parseInt($event.target.style.gridColumn.split('/')[0].trim(), 10) - 1,
+      alive: false
     };
 
+    const backgroundColor = $event.target.style.backgroundColor;
     if (!backgroundColor) {
         $event.target.style.backgroundColor = 'red';
-        cellStyleInfo.mark = true;
+        cellInfo.alive = true;
     } else {
         $event.target.style.backgroundColor = '';
     }
 
-    this.tracking.markCell(cellStyleInfo);
+    this.tracking.markCell(cellInfo);
   }
 
   // NOTE: used for testing the rules!
@@ -89,7 +90,15 @@ export class BoardComponent implements OnInit {
     this.life.useTrackingService(this.tracking);
     this.life.applyRules();
 
-    // TODO: use this to update the board with a new generation of cells
-    console.log('newGeneration:', this.life.newGeneration);
+    this.life.newGeneration.forEach((c: CellInfo) => {
+      this.tracking.markCell(c);
+
+      // cellsStyle is still linked to the template i.e. can make dynamic changes to the css style
+      if (c.alive) {
+        this.cellsStyle[c.row][c.col].backgroundColor = 'red';
+      } else {
+        this.cellsStyle[c.row][c.col].backgroundColor = '';
+      }
+    });
   }
 }

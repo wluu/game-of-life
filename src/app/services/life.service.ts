@@ -3,11 +3,12 @@
 import { Injectable } from '@angular/core';
 
 import { TrackingService } from './tracking.service';
+import { CellInfo } from '../cell-info.interface';
 
 @Injectable()
 export class LifeService {
 
-  newGeneration: any[];
+  newGeneration: CellInfo[];
 
   private neighbors: any[];
   private tracking: TrackingService;

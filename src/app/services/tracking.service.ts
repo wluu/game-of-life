@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 
+import { CellInfo } from '../cell-info.interface';
+
 @Injectable()
 export class TrackingService {
 
@@ -23,19 +25,7 @@ export class TrackingService {
     }
   }
 
-  /*
-    cellStyleInfo = {
-      row: string,
-      col: string,
-      mark: boolean
-    }
-
-    both 'row' and 'col' will be in the format of: number / auto
-  */
-  markCell(cellStyleInfo: any) {
-    // the grid layout starts index at 1
-    const row = parseInt(cellStyleInfo.row.split('/')[0].trim(), 10) - 1;
-    const col = parseInt(cellStyleInfo.col.split('/')[0].trim(), 10) - 1;
-    this.board[row][col] = cellStyleInfo.mark;
+  markCell(cell: CellInfo) {
+    this.board[cell.row][cell.col] = cell.alive;
   }
 }

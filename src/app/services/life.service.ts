@@ -52,13 +52,19 @@ export class LifeService {
           // Any live cell with fewer than two live neighbors dies, as if caused by under population.
           // Any live cell with more than three live neighbors dies, as if by overpopulation.
           if (liveNeighbors < 2 || liveNeighbors > 3) {
+          // NOTE: used for debugging
+          console.log('cell dies');
+
             this.newGeneration.push({
               row: curRow,
               col: curCol,
               alive: false
             });
           } else {
-            // Any live cell with two or three live neighbors lives on to the next generation.
+            // NOTE: used for debugging
+            console.log('cell lives onto next generation');
+
+            // Any live cell with two or three live neighbors lives onto the next generation.
             this.newGeneration.push({
               row: curRow,
               col: curCol,
@@ -74,13 +80,16 @@ export class LifeService {
 
             if (!cellIsChecked) {
               // NOTE: used for debugging
-              console.log('mark cell');
+              console.log('mark dead cell');
 
               checkedDeadCells[deadNeighbor.row][deadNeighbor.col] = true;
               liveNeighbors = this.anyLiveNeighborsAt(deadNeighbor.row, deadNeighbor.col);
 
               // Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
               if (liveNeighbors === 3) {
+                // NOTE: used for debugging
+                console.log('dead cell becomes a live cell');
+
                 this.newGeneration.push({
                   row: deadNeighbor.row,
                   col: deadNeighbor.col,
@@ -92,13 +101,16 @@ export class LifeService {
         }
       }
     }
+
+    // NOTE: used for debugging
+    console.log('newGeneration:', this.newGeneration);
   }
 
   private anyLiveNeighborsAt(r: number, c: number): number {
     let liveNeighbors = 0;
 
-    this.checkNeighborsAt(r, c, (info: any) => {
-      if (info.neighborIsAlive) {
+    this.checkNeighborsAt(r, c, (neighbor: CellInfo) => {
+      if (neighbor.alive) {
         liveNeighbors++;
       }
     });
@@ -112,11 +124,11 @@ export class LifeService {
   private getDeadNeighborsAt(r: number, c: number): any[] {
     const deadNeighbors = [];
 
-    this.checkNeighborsAt(r, c, (info: any) => {
-      if (!info.neighborIsAlive) {
+    this.checkNeighborsAt(r, c, (neighbor: CellInfo) => {
+      if (!neighbor.alive) {
         deadNeighbors.push({
-          row: info.neighborRow,
-          col: info.neighborCol,
+          row: neighbor.row,
+          col: neighbor.col,
         });
       }
     });
@@ -127,16 +139,16 @@ export class LifeService {
     return deadNeighbors;
   }
 
-  private checkNeighborsAt(r: number, c: number, cb: (info: any) => void) {
+  private checkNeighborsAt(r: number, c: number, cb: (info: CellInfo) => void) {
     this.neighbors.forEach((neighborCoord) => {
       const neighborRow = r + neighborCoord.row;
       const neighborCol = c + neighborCoord.col;
 
       if (this.isWithinBorders(neighborRow, neighborCol)) {
         cb({
-          neighborIsAlive: this.tracking.board[neighborRow][neighborCol],
-          neighborRow,
-          neighborCol
+          row: neighborRow,
+          col: neighborCol,
+          alive: this.tracking.board[neighborRow][neighborCol]
         });
       }
     });

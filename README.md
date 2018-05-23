@@ -21,7 +21,7 @@ Going to break this down into smaller chunks:
   - [x] Add the life rules
   - [x] Mock the control to make sure the rules are correct
 - [x] ~~Emit data to the board component~~ Get data from life service so we can actually update the board with new data
-- [ ] Will need to create some form of game loop so the cells appear to be moving
+- [x] Will need to create some form of game loop so the cells appear to be moving
 - [ ] Add the controls
   - Start with text to substitute for the image of each control
   - Flesh this part as well when deep in it; will need to hook this part to the rules and the board

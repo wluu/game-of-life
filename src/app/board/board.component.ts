@@ -68,37 +68,57 @@ export class BoardComponent implements OnInit {
 
   updateCell($event: any) {
     // the grid layout starts index at 1
-    const cellInfo = {
+    const curCell = {
       row: parseInt($event.target.style.gridRow.split('/')[0].trim(), 10) - 1,
       col: parseInt($event.target.style.gridColumn.split('/')[0].trim(), 10) - 1,
       alive: false
     };
 
+    /*
+      NOTE:
+      style changes to the cell should be applied through this.cellsStyle.
+      applying style changes through $event.target.style will not update the template's style correctly.
+      e.g. click on a cell, apply rules, click on same cell, ui does not get updated.
+
+      i suspect angular is enforcing some rule to prevent me to write to the style via the DOM event object.
+      or, i've missed something in the angular docs or i don't fully understand how anuglar works ... which is the most likely case.
+    */
     const backgroundColor = $event.target.style.backgroundColor;
     if (!backgroundColor) {
-        $event.target.style.backgroundColor = 'red';
-        cellInfo.alive = true;
+      this.cellsStyle[curCell.row][curCell.col].backgroundColor = 'red';
+      curCell.alive = true;
     } else {
-        $event.target.style.backgroundColor = '';
+      this.cellsStyle[curCell.row][curCell.col].backgroundColor = '';
     }
 
-    this.tracking.markCell(cellInfo);
+    this.tracking.markCell(curCell);
   }
 
-  // NOTE: used for testing the rules!
-  fooTest() {
+  // NOTE: used for testing the rules and the game loop
+  fooRun() {
     this.life.useTrackingService(this.tracking);
-    this.life.applyRules();
 
-    this.life.newGeneration.forEach((c: CellInfo) => {
-      this.tracking.markCell(c);
+    let generation = 0;
 
-      // cellsStyle is still linked to the template i.e. can make dynamic changes to the css style
-      if (c.alive) {
-        this.cellsStyle[c.row][c.col].backgroundColor = 'red';
-      } else {
-        this.cellsStyle[c.row][c.col].backgroundColor = '';
+    const intervalId = window.setInterval(() => {
+      generation++;
+
+      this.life.applyRules();
+
+      this.life.newGeneration.forEach((c: CellInfo) => {
+        this.tracking.markCell(c);
+
+        // cellsStyle is still linked to the template i.e. can make dynamic changes to the css style
+        if (c.alive) {
+          this.cellsStyle[c.row][c.col].backgroundColor = 'red';
+        } else {
+          this.cellsStyle[c.row][c.col].backgroundColor = '';
+        }
+      });
+
+      if (generation === 20) {
+        window.clearInterval(intervalId);
       }
-    });
+    }, 1000);
   }
 }

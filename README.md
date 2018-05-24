@@ -22,6 +22,11 @@ Going to break this down into smaller chunks:
   - [x] Mock the control to make sure the rules are correct
 - [x] ~~Emit data to the board component~~ Get data from life service so we can actually update the board with new data
 - [x] Will need to create some form of game loop so the cells appear to be moving
-- [ ] Add the controls
-  - Start with text to substitute for the image of each control
-  - Flesh this part as well when deep in it; will need to hook this part to the rules and the board
+- [ ] Create a class for the debugging logs and the debugging text on the board
+- TAG/BRANCH for posterity
+- [ ] Add the controls (minimalistic level)
+  - Need to re-evaluate the state flows and layout design
+    - Controls at the bottom of the board
+    - Can click to generate the seed cells or hold down left mouse button and drag
+    - Dropdown of predefined cells on the left of the board
+- [ ] Material design???

@@ -23,7 +23,6 @@ Going to break this down into smaller chunks:
 - [x] ~~Emit data to the board component~~ Get data from life service so we can actually update the board with new data
 - [x] Will need to create some form of game loop so the cells appear to be moving
 - [x] Create a class for the debugging logs and the debugging text on the board
-- TAG/BRANCH for posterity
 - [ ] Add the controls (minimalistic level)
   - Need to re-evaluate the state flows and layout design
     - Controls at the bottom of the board

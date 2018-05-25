@@ -1,6 +1,6 @@
 {
   "name": "game-of-life",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "debug-mode": "ng serve -c debug"

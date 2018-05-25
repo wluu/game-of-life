@@ -41,6 +41,14 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ]
+            },
+            "debug": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.debug.ts"
+                }
+              ]
             }
           }
         },
@@ -52,6 +60,9 @@
           "configurations": {
             "production": {
               "browserTarget": "game-of-life:build:production"
+            },
+            "debug": {
+              "browserTarget": "game-of-life:build:debug"
             }
           }
         },

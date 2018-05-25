@@ -5,6 +5,8 @@ import { Injectable } from '@angular/core';
 import { TrackingService } from './tracking.service';
 import { CellInfo } from '../cell-info.interface';
 
+import { debug } from '../debug.logger';
+
 @Injectable()
 export class LifeService {
 
@@ -44,27 +46,21 @@ export class LifeService {
         const liveCell = this.tracking.board[curRow][curCol];
 
         if (liveCell) {
-          // NOTE: used for debugging
-          console.log('curRow:', curRow, ', curCol:', curCol);
-
+          debug.log('liveCell: curRow:', curRow, ', curCol:', curCol);
           let liveNeighbors = this.anyLiveNeighborsAt(curRow, curCol);
 
           // Any live cell with fewer than two live neighbors dies, as if caused by under population.
           // Any live cell with more than three live neighbors dies, as if by overpopulation.
           if (liveNeighbors < 2 || liveNeighbors > 3) {
-          // NOTE: used for debugging
-          console.log('cell dies');
-
+            debug.log('cell dies');
             this.newGeneration.push({
               row: curRow,
               col: curCol,
               alive: false
             });
           } else {
-            // NOTE: used for debugging
-            console.log('cell lives onto next generation');
-
             // Any live cell with two or three live neighbors lives onto the next generation.
+            debug.log('cell lives onto next generation');
             this.newGeneration.push({
               row: curRow,
               col: curCol,
@@ -73,23 +69,17 @@ export class LifeService {
           }
 
           this.getDeadNeighborsAt(curRow, curCol).forEach((deadNeighbor) => {
-            // NOTE: used for debugging
-            console.log('deadNeighbor.row:', deadNeighbor.row, ', deadNeighbor.col:', deadNeighbor.col);
-
+            debug.log('deadNeighbor.row:', deadNeighbor.row, ', deadNeighbor.col:', deadNeighbor.col);
             const cellIsChecked = checkedDeadCells[deadNeighbor.row][deadNeighbor.col];
 
             if (!cellIsChecked) {
-              // NOTE: used for debugging
-              console.log('mark dead cell');
-
+              debug.log('mark dead cell');
               checkedDeadCells[deadNeighbor.row][deadNeighbor.col] = true;
               liveNeighbors = this.anyLiveNeighborsAt(deadNeighbor.row, deadNeighbor.col);
 
               // Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
               if (liveNeighbors === 3) {
-                // NOTE: used for debugging
-                console.log('dead cell becomes a live cell');
-
+                debug.log('dead cell becomes a live cell');
                 this.newGeneration.push({
                   row: deadNeighbor.row,
                   col: deadNeighbor.col,
@@ -101,9 +91,7 @@ export class LifeService {
         }
       }
     }
-
-    // NOTE: used for debugging
-    console.log('newGeneration:', this.newGeneration);
+    debug.log('newGeneration:', this.newGeneration);
   }
 
   private anyLiveNeighborsAt(r: number, c: number): number {
@@ -115,9 +103,7 @@ export class LifeService {
       }
     });
 
-    // NOTE: used for debugging
-    console.log('liveNeighbors:', liveNeighbors);
-
+    debug.log('liveNeighbors:', liveNeighbors);
     return liveNeighbors;
   }
 
@@ -133,9 +119,7 @@ export class LifeService {
       }
     });
 
-    // NOTE: used for debugging
-    console.log('deadNeighbors:', deadNeighbors);
-
+    debug.log('deadNeighbors:', deadNeighbors);
     return deadNeighbors;
   }
 

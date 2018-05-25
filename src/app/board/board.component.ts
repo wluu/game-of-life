@@ -4,6 +4,8 @@ import { LifeService } from '../services/life.service';
 import { TrackingService } from '../services/tracking.service';
 import { CellInfo } from '../cell-info.interface';
 
+import { environment } from '../../environments/environment';
+
 @Component({
   selector: 'life-board',
   templateUrl: './board.component.html',
@@ -16,6 +18,8 @@ export class BoardComponent implements OnInit {
   private boardHeight: number;
   private cellsStyle: any[][];
   private boardDimensionStyle: any;
+
+  private debugMode = environment['debug'];
 
   constructor(
     private tracking: TrackingService,

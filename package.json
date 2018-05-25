@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "lint": "ng lint"
+    "debug-mode": "ng serve -c debug"
   },
   "dependencies": {
     "@angular/cli": "6.0.0",

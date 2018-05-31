@@ -1,1 +1,13 @@
+.center-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
+.controls {
+  display: flex;
+  justify-content: space-evenly;
+  width: 75%;
+  margin-top: 1%;
+}

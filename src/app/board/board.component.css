@@ -1,5 +1,3 @@
 .board-container {
   display: grid;
-  /* NOTE: only setting this for debugging purposes */
-  font-size: 8pt;
 }

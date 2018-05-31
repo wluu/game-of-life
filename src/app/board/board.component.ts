@@ -35,8 +35,8 @@ export class BoardComponent implements OnInit {
     this.tracking.initBoard(30, 50);
 
     this.boardDimensionStyle = {
-      'grid-template-columns': `repeat(${this.boardWidth}, 30px)`,
-      'grid-template-rows': `repeat(${this.boardHeight}, 30px)`
+      'grid-template-columns': `repeat(${this.boardWidth}, 25px)`,
+      'grid-template-rows': `repeat(${this.boardHeight}, 25px)`
     };
 
     for (let row = 0; row < this.boardHeight; row++) {
@@ -47,17 +47,17 @@ export class BoardComponent implements OnInit {
 
         // creating cell borders from left to right on each row; starting point (0, 0)
         if (row === 0 && col === 0) {
-          // starting at (0, 0), all the borders should be solid
-          borderStyle = 'solid';
+          // starting at (0, 0), all the borders should be groove
+          borderStyle = 'groove';
         } else if (row === 0) {
           // after (0, 0), all cells on the first row will have:
-          borderStyle = 'solid solid solid none';
+          borderStyle = 'groove groove groove none';
         } else if (col === 0) {
           // moving to the next rows, the cells in the first column will have:
-          borderStyle = 'none solid solid solid';
+          borderStyle = 'none groove groove groove';
         } else {
           // and the cells after the after column will have:
-          borderStyle = 'none solid solid none';
+          borderStyle = 'none groove groove none';
         }
 
         this.cellsStyle[row][col] = {
@@ -66,6 +66,10 @@ export class BoardComponent implements OnInit {
           'grid-column': col + 1,
           'border-style': borderStyle
         };
+
+        if (this.debugMode) {
+          this.cellsStyle[row][col]['font-size'] = '8pt';
+        }
       }
     }
   }

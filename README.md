@@ -25,4 +25,8 @@ Going to break this down into smaller chunks:
 - [x] Create a class for the debugging logs and the debugging text on the board
 - [x] Re-evaluate the state flows and layout design
 - [ ] Add the controls (minimalistic level)
+  - [x] Added the basic layout
+  - [ ] Hook up the buttons to the board component
+  - [ ] Add the drop-down list to have initial seeds
+  - [ ] Add the help icon
 - [ ] Material design???

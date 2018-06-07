@@ -28,9 +28,10 @@ Going to break this down into smaller chunks:
   - [x] Added the basic layout
   - [x] Hook up the buttons to the board component
   - [ ] Add the ability to click and hold to select the cells
+  - [ ] Properly disable and enable the control buttons
+    - Including when all cells die
   - [ ] Add the drop-down list to have initial seeds; start with two
-  - [ ] Properly disable and enable the button and drop-down list states
-    - Including when all the cells die
+    - Make sure it's properly disabled/enabled during the different states
   - [ ] Add the help icon
 - [ ] Check performance/memory
 - [ ] Material design???

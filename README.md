@@ -32,4 +32,5 @@ Going to break this down into smaller chunks:
   - [ ] Properly disable and enable the button and drop-down list states
     - Including when all the cells die
   - [ ] Add the help icon
+- [ ] Check performance/memory
 - [ ] Material design???

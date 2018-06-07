@@ -1,12 +1,9 @@
 <div class="center-container">
-  <life-board></life-board>
+  <life-board #board></life-board>
   <div class="controls">
-    <!-- TODO: change into button -->
-    <div>Play</div>
-    <!-- TODO: change into button -->
-    <div>Stop</div>
-    <!-- TODO: change into button -->
-    <div>Clear</div>
+    <button (click)="board.play()">Play</button>
+    <button (click)="board.stop()">Stop</button>
+    <button (click)="board.clear()">Clear</button>
     <!-- TODO: change into drop-down -->
     <div>Select Seed</div>
   </div>

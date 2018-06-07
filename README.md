@@ -26,7 +26,10 @@ Going to break this down into smaller chunks:
 - [x] Re-evaluate the state flows and layout design
 - [ ] Add the controls (minimalistic level)
   - [x] Added the basic layout
-  - [ ] Hook up the buttons to the board component
-  - [ ] Add the drop-down list to have initial seeds
+  - [x] Hook up the buttons to the board component
+  - [ ] Add the ability to click and hold to select the cells
+  - [ ] Add the drop-down list to have initial seeds; start with two
+  - [ ] Properly disable and enable the button and drop-down list states
+    - Including when all the cells die
   - [ ] Add the help icon
 - [ ] Material design???

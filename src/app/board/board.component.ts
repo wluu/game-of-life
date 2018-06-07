@@ -19,6 +19,8 @@ export class BoardComponent implements OnInit {
   private cellsStyle: any[][];
   private boardDimensionStyle: any;
 
+  private intervalId: number;
+
   private debugMode = environment['debug'];
 
   constructor(
@@ -32,7 +34,8 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.tracking.initBoard(30, 50);
+    this.tracking.initBoard(this.boardHeight, this.boardWidth);
+    this.life.useTrackingService(this.tracking);
 
     this.boardDimensionStyle = {
       'grid-template-columns': `repeat(${this.boardWidth}, 25px)`,
@@ -102,31 +105,48 @@ export class BoardComponent implements OnInit {
     this.tracking.markCell(curCell);
   }
 
-  // NOTE: used for testing the rules and the game loop
-  fooRun() {
-    this.life.useTrackingService(this.tracking);
+  // game loop
+  play() {
+    this.updateBoard();
 
-    let generation = 0;
-
-    const intervalId = window.setInterval(() => {
-      generation++;
-
-      this.life.applyRules();
-
-      this.life.newGeneration.forEach((c: CellInfo) => {
-        this.tracking.markCell(c);
-
-        // cellsStyle is still linked to the template i.e. can make dynamic changes to the css style
-        if (c.alive) {
-          this.cellsStyle[c.row][c.col].backgroundColor = 'red';
-        } else {
-          this.cellsStyle[c.row][c.col].backgroundColor = '';
-        }
-      });
-
-      if (generation === 20) {
-        window.clearInterval(intervalId);
+    this.intervalId = window.setInterval(() => {
+      if (this.life.newGeneration.length) {
+        this.updateBoard();
+      } else {
+          window.clearInterval(this.intervalId);
       }
     }, 1000);
+  }
+
+  stop() {
+    window.clearInterval(this.intervalId);
+  }
+
+  clear() {
+    window.clearInterval(this.intervalId);
+
+    this.life.newGeneration.forEach((c: CellInfo) => {
+      if (c.alive) {
+        this.cellsStyle[c.row][c.col].backgroundColor = '';
+      }
+    });
+
+    this.tracking.initBoard(this.boardHeight, this.boardWidth);
+    this.life.newGeneration = [];
+  }
+
+  private updateBoard() {
+    this.life.applyRules();
+
+    this.life.newGeneration.forEach((c: CellInfo) => {
+      this.tracking.markCell(c);
+
+      // cellsStyle is still linked to the template i.e. can make dynamic changes to the css style
+      if (c.alive) {
+        this.cellsStyle[c.row][c.col].backgroundColor = 'red';
+      } else {
+        this.cellsStyle[c.row][c.col].backgroundColor = '';
+      }
+    });
   }
 }

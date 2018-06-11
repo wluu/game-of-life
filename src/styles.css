@@ -1,6 +1,12 @@
 * {
   /* this will help with specifying an element's width i.e. padding + border + margin will be included in the width */
   box-sizing: border-box;
+
+  /* disable text selection; helps with allowing to click, hold, and drag on cells */
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;          /* Likely future */
 }
 
 html {

@@ -1,7 +1,12 @@
 <div class="board-container" [ngStyle]="boardDimensionStyle">
   <ng-container *ngFor="let row of cellsStyle">
     <ng-container *ngFor="let cellStyle of row">
-      <div [ngStyle]="cellStyle" (click)="updateCell($event)">
+      <div
+      draggable="false"
+      [ngStyle]="cellStyle"
+      (mousedown)="mouseDown($event)"
+      (mousemove)="mouseMove($event)"
+      (mouseup)="mouseUp($event)">
         <ng-container *ngIf="debugMode">
           {{ cellStyle['grid-row'] - 1 }},{{ cellStyle['grid-column'] - 1 }}
         </ng-container>

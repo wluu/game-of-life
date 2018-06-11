@@ -19,7 +19,9 @@ export class BoardComponent implements OnInit {
   private cellsStyle: any[][];
   private boardDimensionStyle: any;
 
-  private intervalId: number;
+  private loopIntervalId: number;
+
+  private isMouseDown: boolean;
 
   private debugMode = environment['debug'];
 
@@ -77,7 +79,9 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  updateCell($event: any) {
+  mouseDown($event: any) {
+    this.isMouseDown = true;
+
     // the grid layout starts index at 1
     const curCell = {
       row: parseInt($event.target.style.gridRow.split('/')[0].trim(), 10) - 1,
@@ -105,30 +109,46 @@ export class BoardComponent implements OnInit {
     this.tracking.markCell(curCell);
   }
 
+  mouseMove($event: any) {
+    if (this.isMouseDown) {
+      const curCell = {
+        row: parseInt($event.target.style.gridRow.split('/')[0].trim(), 10) - 1,
+        col: parseInt($event.target.style.gridColumn.split('/')[0].trim(), 10) - 1,
+        alive: true
+      };
+      this.cellsStyle[curCell.row][curCell.col].backgroundColor = 'red';
+      this.tracking.markCell(curCell);
+    }
+  }
+
+  mouseUp($event: any) {
+    this.isMouseDown = false;
+  }
+
   // game loop
   play() {
     this.updateBoard();
 
-    this.intervalId = window.setInterval(() => {
+    this.loopIntervalId = window.setInterval(() => {
       if (this.life.newGeneration.length) {
         this.updateBoard();
       } else {
-          window.clearInterval(this.intervalId);
+          window.clearInterval(this.loopIntervalId);
       }
     }, 1000);
   }
 
   stop() {
-    window.clearInterval(this.intervalId);
+    window.clearInterval(this.loopIntervalId);
   }
 
   clear() {
-    window.clearInterval(this.intervalId);
+    window.clearInterval(this.loopIntervalId);
 
-    this.life.newGeneration.forEach((c: CellInfo) => {
-      if (c.alive) {
-        this.cellsStyle[c.row][c.col].backgroundColor = '';
-      }
+    this.cellsStyle.forEach((columns: any[]) => {
+      columns.forEach((c: any) => {
+        c.backgroundColor = '';
+      });
     });
 
     this.tracking.initBoard(this.boardHeight, this.boardWidth);

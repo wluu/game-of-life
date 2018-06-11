@@ -28,7 +28,7 @@ Going to break this down into smaller chunks:
   - [x] Added the basic layout
   - [x] Hook up the buttons to the board component
   - [x] Add the ability to click and hold to select the cells
-    - [ ] REFACTOR A BIT
+    - [x] REFACTOR A BIT
   - [ ] Properly disable and enable the control buttons
     - Including when all cells die
   - [ ] Add the drop-down list to have initial seeds; start with two

@@ -32,6 +32,16 @@ export class BoardComponent implements OnInit {
     // NOTE: manually setting the boardWidth and boardHeight for now
     this.boardHeight = 30;
     this.boardWidth = 50;
+
+    /*
+      NOTE:
+      dynamic style changes to the cell should be applied through this.cellsStyle.
+      applying style changes through $event.target.style will not update the template's style correctly.
+      e.g. click on a cell, apply rules, click on same cell, ui does not get updated.
+
+      i suspect angular is enforcing some rule to prevent me to write to the style via the DOM event object.
+      or, i've missed something in the angular docs or i don't fully understand how anuglar works ... which is the most likely case.
+    */
     this.cellsStyle = [];
   }
 
@@ -83,25 +93,12 @@ export class BoardComponent implements OnInit {
     this.isMouseDown = true;
 
     // the grid layout starts index at 1
-    const curCell = {
-      row: parseInt($event.target.style.gridRow.split('/')[0].trim(), 10) - 1,
-      col: parseInt($event.target.style.gridColumn.split('/')[0].trim(), 10) - 1,
-      alive: false
-    };
+    const curCell = this.getCellInfoAt($event.target.style.gridRow, $event.target.style.gridColumn);
 
-    /*
-      NOTE:
-      style changes to the cell should be applied through this.cellsStyle.
-      applying style changes through $event.target.style will not update the template's style correctly.
-      e.g. click on a cell, apply rules, click on same cell, ui does not get updated.
-
-      i suspect angular is enforcing some rule to prevent me to write to the style via the DOM event object.
-      or, i've missed something in the angular docs or i don't fully understand how anuglar works ... which is the most likely case.
-    */
     const backgroundColor = $event.target.style.backgroundColor;
     if (!backgroundColor) {
-      this.cellsStyle[curCell.row][curCell.col].backgroundColor = 'red';
       curCell.alive = true;
+      this.cellsStyle[curCell.row][curCell.col].backgroundColor = 'red';
     } else {
       this.cellsStyle[curCell.row][curCell.col].backgroundColor = '';
     }
@@ -111,13 +108,11 @@ export class BoardComponent implements OnInit {
 
   mouseMove($event: any) {
     if (this.isMouseDown) {
-      const curCell = {
-        row: parseInt($event.target.style.gridRow.split('/')[0].trim(), 10) - 1,
-        col: parseInt($event.target.style.gridColumn.split('/')[0].trim(), 10) - 1,
-        alive: true
-      };
-      this.cellsStyle[curCell.row][curCell.col].backgroundColor = 'red';
+      const curCell = this.getCellInfoAt($event.target.style.gridRow, $event.target.style.gridColumn);
+
+      curCell.alive = true;
       this.tracking.markCell(curCell);
+      this.cellsStyle[curCell.row][curCell.col].backgroundColor = 'red';
     }
   }
 
@@ -168,5 +163,13 @@ export class BoardComponent implements OnInit {
         this.cellsStyle[c.row][c.col].backgroundColor = '';
       }
     });
+  }
+
+  private getCellInfoAt(gridRow: string, gridCol: string): CellInfo {
+    return {
+      row: parseInt(gridRow.split('/')[0].trim(), 10) - 1,
+      col: parseInt(gridCol.split('/')[0].trim(), 10) - 1,
+      alive: false // assume cell is dead
+    };
   }
 }

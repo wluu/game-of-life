@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 import { LifeService } from '../services/life.service';
 import { TrackingService } from '../services/tracking.service';
-import { CellInfo } from '../cell-info.interface';
+import { CellInfo } from '../model-interfaces/cell-info.interface';
+import { DisabledControls } from '../model-interfaces/disabled-controls.interface';
 
 import { environment } from '../../environments/environment';
 
@@ -13,6 +14,8 @@ import { environment } from '../../environments/environment';
   providers: [TrackingService, LifeService]
 })
 export class BoardComponent implements OnInit {
+
+  @Output() disabledControls = new EventEmitter<DisabledControls>();
 
   private boardWidth: number;
   private boardHeight: number;
@@ -87,6 +90,13 @@ export class BoardComponent implements OnInit {
         }
       }
     }
+
+    this.disabledControls.emit({
+      disabledPlay: true,
+      disabledStop: true,
+      disabledClear: true,
+      disabledSeed: false
+    });
   }
 
   mouseDown($event: any) {
@@ -104,6 +114,13 @@ export class BoardComponent implements OnInit {
     }
 
     this.tracking.markCell(curCell);
+
+    this.disabledControls.emit({
+      disabledPlay: false,
+      disabledStop: true,
+      disabledClear: false,
+      disabledSeed: false
+    });
   }
 
   mouseMove($event: any) {
@@ -129,12 +146,33 @@ export class BoardComponent implements OnInit {
         this.updateBoard();
       } else {
           window.clearInterval(this.loopIntervalId);
+
+          this.disabledControls.emit({
+            disabledPlay: true,
+            disabledStop: true,
+            disabledClear: true,
+            disabledSeed: false,
+          });
       }
-    }, 1000);
+    }, 600);
+
+    this.disabledControls.emit({
+      disabledPlay: true,
+      disabledStop: false,
+      disabledClear: false,
+      disabledSeed: true,
+    });
   }
 
   stop() {
     window.clearInterval(this.loopIntervalId);
+
+    this.disabledControls.emit({
+      disabledPlay: false,
+      disabledStop: true,
+      disabledClear: false,
+      disabledSeed: false,
+    });
   }
 
   clear() {
@@ -148,6 +186,13 @@ export class BoardComponent implements OnInit {
 
     this.tracking.initBoard(this.boardHeight, this.boardWidth);
     this.life.newGeneration = [];
+
+    this.disabledControls.emit({
+      disabledPlay: true,
+      disabledStop: true,
+      disabledClear: true,
+      disabledSeed: false,
+    });
   }
 
   private updateBoard() {

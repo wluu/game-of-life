@@ -1,10 +1,12 @@
 <div class="center-container">
-  <life-board #board></life-board>
+  <life-board #board (disabledControls)="handleButtonStates($event)"></life-board>
   <div class="controls">
-    <button (click)="board.play()">Play</button>
-    <button (click)="board.stop()">Stop</button>
-    <button (click)="board.clear()">Clear</button>
-    <!-- TODO: change into drop-down -->
-    <div>Select Seed</div>
+    <button (click)="board.play()" [disabled]="disabledPlay">Play</button>
+    <button (click)="board.stop()" [disabled]="disabledStop">Stop</button>
+    <button (click)="board.clear()" [disabled]="disabledClear">Clear</button>
+    <!-- TODO: hook up later -->
+    <select [disabled]="disabledSeed">
+      <option selected>Select Seed</option>
+    </select>
   </div>
 </div>

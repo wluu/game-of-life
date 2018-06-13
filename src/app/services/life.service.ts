@@ -3,7 +3,7 @@
 import { Injectable } from '@angular/core';
 
 import { TrackingService } from './tracking.service';
-import { CellInfo } from '../cell-info.interface';
+import { CellInfo } from '../model-interfaces/cell-info.interface';
 
 import { debug } from '../debug.logger';
 

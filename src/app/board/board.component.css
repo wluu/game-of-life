@@ -1,3 +1,4 @@
 .board-container {
   display: grid;
+  cursor: crosshair; /* i think this helps prevent the cursor from changing into a text selector */
 }

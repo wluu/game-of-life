@@ -22,8 +22,6 @@ export class BoardComponent implements OnInit {
   private cellsStyle: any[][];
   private boardDimensionStyle: any;
 
-  private loopIntervalId: number;
-
   private isMouseDown: boolean;
 
   private debugMode = environment['debug'];
@@ -90,13 +88,6 @@ export class BoardComponent implements OnInit {
         }
       }
     }
-
-    this.disabledControls.emit({
-      disabledPlay: true,
-      disabledStop: true,
-      disabledClear: true,
-      disabledSeed: false
-    });
   }
 
   mouseDown($event: any) {
@@ -137,65 +128,7 @@ export class BoardComponent implements OnInit {
     this.isMouseDown = false;
   }
 
-  // game loop
-  play() {
-    this.updateBoard();
-
-    this.loopIntervalId = window.setInterval(() => {
-      if (this.life.newGeneration.length) {
-        this.updateBoard();
-      } else {
-          window.clearInterval(this.loopIntervalId);
-
-          this.disabledControls.emit({
-            disabledPlay: true,
-            disabledStop: true,
-            disabledClear: true,
-            disabledSeed: false,
-          });
-      }
-    }, 600);
-
-    this.disabledControls.emit({
-      disabledPlay: true,
-      disabledStop: false,
-      disabledClear: false,
-      disabledSeed: true,
-    });
-  }
-
-  stop() {
-    window.clearInterval(this.loopIntervalId);
-
-    this.disabledControls.emit({
-      disabledPlay: false,
-      disabledStop: true,
-      disabledClear: false,
-      disabledSeed: false,
-    });
-  }
-
-  clear() {
-    window.clearInterval(this.loopIntervalId);
-
-    this.cellsStyle.forEach((columns: any[]) => {
-      columns.forEach((c: any) => {
-        c.backgroundColor = '';
-      });
-    });
-
-    this.tracking.initBoard(this.boardHeight, this.boardWidth);
-    this.life.newGeneration = [];
-
-    this.disabledControls.emit({
-      disabledPlay: true,
-      disabledStop: true,
-      disabledClear: true,
-      disabledSeed: false,
-    });
-  }
-
-  private updateBoard() {
+  update() {
     this.life.applyRules();
 
     this.life.newGeneration.forEach((c: CellInfo) => {
@@ -208,6 +141,21 @@ export class BoardComponent implements OnInit {
         this.cellsStyle[c.row][c.col].backgroundColor = '';
       }
     });
+  }
+
+  hasMoreLife() {
+    return this.life.newGeneration.length;
+  }
+
+  reset() {
+    this.cellsStyle.forEach((columns: any[]) => {
+      columns.forEach((c: any) => {
+        c.backgroundColor = '';
+      });
+    });
+
+    this.tracking.initBoard(this.boardHeight, this.boardWidth);
+    this.life.newGeneration = [];
   }
 
   private getCellInfoAt(gridRow: string, gridCol: string): CellInfo {

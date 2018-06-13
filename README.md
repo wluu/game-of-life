@@ -32,7 +32,7 @@ Going to break this down into smaller chunks:
   - [x] Properly disable and enable the control buttons
     - Including when all cells die
   - [ ] Add the drop-down list to have initial seeds; start with two
-    - Make sure it's properly disabled/enabled during the different states
+    - ~~Make sure it's properly disabled/enabled during the different states~~
   - [ ] Add the help icon
 - [ ] Check performance/memory
 - [ ] Material design???

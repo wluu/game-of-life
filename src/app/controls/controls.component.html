@@ -1,0 +1,9 @@
+<div class="controls-container">
+  <button (click)="play()" [disabled]="disabledPlay">Play</button>
+  <button (click)="stop()" [disabled]="disabledStop">Stop</button>
+  <button (click)="clear()" [disabled]="disabledClear">Clear</button>
+  <!-- TODO: hook up later -->
+  <select [disabled]="disabledSeed">
+    <option selected>Select Seed</option>
+  </select>
+</div>

@@ -13,6 +13,7 @@ export class ControlsComponent implements OnInit {
   @Input() board: BoardComponent;
 
   private disabledPlay: boolean;
+  private disabledNext: boolean;
   private disabledStop: boolean;
   private disabledClear: boolean;
   private disabledSeed: boolean;
@@ -23,39 +24,43 @@ export class ControlsComponent implements OnInit {
 
   ngOnInit() {
     this.disabledPlay = true;
+    this.disabledNext = true;
     this.disabledStop = true;
     this.disabledClear = true;
     this.disabledSeed = false;
   }
 
-  // game loop
   play() {
     this.board.update();
 
+    // game loop
     this.loopIntervalId = window.setInterval.call(this,
       () => {
         if (this.board.hasMoreLife()) {
           this.board.update();
         } else {
-            window.clearInterval(this.loopIntervalId);
-
-            this.disabledPlay = true;
-            this.disabledStop = true;
-            this.disabledClear = true;
-            this.disabledSeed = false;
+          window.clearInterval(this.loopIntervalId);
         }
       }, 600);
+  }
 
-    this.disabledPlay = true;
-    this.disabledStop = false;
-    this.disabledClear = false;
-    this.disabledSeed = true;
+  next() {
+    this.board.update();
+
+    if (this.board.hasMoreLife()) {
+      this.disabledPlay = false;
+      this.disabledNext = false;
+      this.disabledStop = true;
+      this.disabledClear = false;
+      this.disabledSeed = false;
+    }
   }
 
   stop() {
     window.clearInterval(this.loopIntervalId);
 
     this.disabledPlay = false;
+    this.disabledNext = false;
     this.disabledStop = true;
     this.disabledClear = false;
     this.disabledSeed = false;
@@ -67,6 +72,7 @@ export class ControlsComponent implements OnInit {
     this.board.reset();
 
     this.disabledPlay = true;
+    this.disabledNext = true;
     this.disabledStop = true;
     this.disabledClear = true;
     this.disabledSeed = false;
@@ -74,6 +80,7 @@ export class ControlsComponent implements OnInit {
 
   handleDisabledStates($event: DisabledControls) {
     this.disabledPlay = $event.disabledPlay;
+    this.disabledNext = $event.disabledNext;
     this.disabledStop = $event.disabledStop;
     this.disabledClear = $event.disabledClear;
     this.disabledSeed = $event.disabledSeed;

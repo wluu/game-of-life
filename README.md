@@ -31,7 +31,7 @@ Going to break this down into smaller chunks:
     - [x] REFACTOR A BIT
   - [x] Properly disable and enable the control buttons
     - Including when all cells die
-  - [ ] Add the next button
+  - [x] Add the next button
   - [ ] Add the drop-down list to have initial seeds; start with two
     - ~~Make sure it's properly disabled/enabled during the different states~~
 - [x] Look into the cursor change bug

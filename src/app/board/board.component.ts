@@ -17,8 +17,9 @@ export class BoardComponent implements OnInit {
 
   @Output() disabledControls = new EventEmitter<DisabledControls>();
 
-  private boardWidth: number;
-  private boardHeight: number;
+  private width: number;
+  private height: number;
+  private cellColor: string;
   private cellsStyle: any[][];
   private boardDimensionStyle: any;
 
@@ -30,9 +31,9 @@ export class BoardComponent implements OnInit {
     private tracking: TrackingService,
     private life: LifeService
   ) {
-    // NOTE: manually setting the boardWidth and boardHeight for now
-    this.boardHeight = 30;
-    this.boardWidth = 50;
+    this.width = 50;
+    this.height = 30;
+    this.cellColor = '#FFDF46';
 
     /*
       NOTE:
@@ -47,18 +48,18 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.tracking.initBoard(this.boardHeight, this.boardWidth);
+    this.tracking.initBoard(this.height, this.width);
     this.life.useTrackingService(this.tracking);
 
     this.boardDimensionStyle = {
-      'grid-template-columns': `repeat(${this.boardWidth}, 25px)`,
-      'grid-template-rows': `repeat(${this.boardHeight}, 25px)`
+      'grid-template-columns': `repeat(${this.width}, 25px)`,
+      'grid-template-rows': `repeat(${this.height}, 25px)`
     };
 
-    for (let row = 0; row < this.boardHeight; row++) {
-      this.cellsStyle[row] = new Array(this.boardWidth);
+    for (let row = 0; row < this.height; row++) {
+      this.cellsStyle[row] = new Array(this.width);
 
-      for (let col = 0; col < this.boardWidth; col++) {
+      for (let col = 0; col < this.width; col++) {
         let borderStyle = '';
 
         // creating cell borders from left to right on each row; starting point (0, 0)
@@ -99,7 +100,7 @@ export class BoardComponent implements OnInit {
     const backgroundColor = $event.target.style.backgroundColor;
     if (!backgroundColor) {
       curCell.alive = true;
-      this.cellsStyle[curCell.row][curCell.col].backgroundColor = 'red';
+      this.cellsStyle[curCell.row][curCell.col].backgroundColor = this.cellColor;
     } else {
       this.cellsStyle[curCell.row][curCell.col].backgroundColor = '';
     }
@@ -108,6 +109,7 @@ export class BoardComponent implements OnInit {
 
     this.disabledControls.emit({
       disabledPlay: false,
+      disabledNext: false,
       disabledStop: true,
       disabledClear: false,
       disabledSeed: false
@@ -120,7 +122,7 @@ export class BoardComponent implements OnInit {
 
       curCell.alive = true;
       this.tracking.markCell(curCell);
-      this.cellsStyle[curCell.row][curCell.col].backgroundColor = 'red';
+      this.cellsStyle[curCell.row][curCell.col].backgroundColor = this.cellColor;
     }
   }
 
@@ -136,15 +138,38 @@ export class BoardComponent implements OnInit {
 
       // cellsStyle is still linked to the template i.e. can make dynamic changes to the css style
       if (c.alive) {
-        this.cellsStyle[c.row][c.col].backgroundColor = 'red';
+        this.cellsStyle[c.row][c.col].backgroundColor = this.cellColor;
       } else {
         this.cellsStyle[c.row][c.col].backgroundColor = '';
       }
     });
+
+    if (this.hasMoreLife()) {
+      this.disabledControls.emit({
+        disabledPlay: true,
+        disabledNext: true,
+        disabledStop: false,
+        disabledClear: false,
+        disabledSeed: true
+      });
+    } else {
+      this.disabledControls.emit({
+        disabledPlay: true,
+        disabledNext: true,
+        disabledStop: true,
+        disabledClear: true,
+        disabledSeed: false
+      });
+    }
   }
 
   hasMoreLife() {
-    return this.life.newGeneration.length;
+    return this.life.newGeneration.reduce((liveCells: number, cell: CellInfo) => {
+      if (cell.alive) {
+        liveCells++;
+      }
+      return liveCells;
+    }, 0);
   }
 
   reset() {
@@ -154,7 +179,7 @@ export class BoardComponent implements OnInit {
       });
     });
 
-    this.tracking.initBoard(this.boardHeight, this.boardWidth);
+    this.tracking.initBoard(this.height, this.width);
     this.life.newGeneration = [];
   }
 

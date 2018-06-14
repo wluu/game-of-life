@@ -3,6 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  cursor: default; /* i think this helps prevent the cursor from changing into a text selector */
 }
 
 life-controls {

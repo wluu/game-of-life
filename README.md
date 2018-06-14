@@ -34,7 +34,7 @@ Going to break this down into smaller chunks:
   - [ ] Add the next button
   - [ ] Add the drop-down list to have initial seeds; start with two
     - ~~Make sure it's properly disabled/enabled during the different states~~
-- [ ] Look into the cursor change bug
+- [x] Look into the cursor change bug
 - [ ] Add the help icon
 - [ ] Check performance/memory
 - [ ] Material design???

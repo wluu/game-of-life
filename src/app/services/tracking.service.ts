@@ -28,4 +28,18 @@ export class TrackingService {
   markCell(cell: CellInfo) {
     this.board[cell.row][cell.col] = cell.alive;
   }
+
+  isBoardEmpty() {
+    let countLiveCells = 0;
+
+    this.board.forEach((row: boolean[]) => {
+      row.forEach((live: boolean) => {
+        if (live) {
+          countLiveCells++;
+        }
+      });
+    });
+
+    return countLiveCells === 0;
+  }
 }

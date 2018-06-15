@@ -32,7 +32,7 @@ export class ControlsComponent implements OnInit {
     // game loop
     this.loopIntervalId = window.setInterval.call(this,
       () => {
-        if (this.board.hasMoreLife()) {
+        if (!this.board.isEmpty()) {
           this.board.update();
         } else {
           window.clearInterval(this.loopIntervalId);
@@ -44,7 +44,7 @@ export class ControlsComponent implements OnInit {
     this.board.update();
 
     // only if we're pressing the next button
-    if (this.board.hasMoreLife()) {
+    if (!this.board.isEmpty()) {
       this.disabled = new DisabledControls().disableStop();
     }
   }

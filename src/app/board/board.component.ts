@@ -106,8 +106,6 @@ export class BoardComponent implements OnInit {
     }
 
     this.tracking.markCell(curCell);
-
-    this.disabledControls.emit(new DisabledControls().disableStop());
   }
 
   mouseMove($event: any) {
@@ -122,6 +120,18 @@ export class BoardComponent implements OnInit {
 
   mouseUp($event: any) {
     this.isMouseDown = false;
+
+    if (!this.tracking.isBoardEmpty()) {
+      this.disabledControls.emit(new DisabledControls().disableStop());
+    } else {
+      this.disabledControls.emit(
+        new DisabledControls()
+          .disablePlay()
+          .disableNext()
+          .disableStop()
+          .disableClear()
+      );
+    }
   }
 
   update() {
@@ -139,7 +149,7 @@ export class BoardComponent implements OnInit {
     });
 
     // these states only happen after you press play and the game cotinues by itself i.e. during the game loop (in controls component)
-    if (this.hasMoreLife()) {
+    if (!this.tracking.isBoardEmpty()) {
       this.disabledControls.emit(
         new DisabledControls()
           .disablePlay()
@@ -157,13 +167,8 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  hasMoreLife() {
-    return this.life.newGeneration.reduce((liveCells: number, cell: CellInfo) => {
-      if (cell.alive) {
-        liveCells++;
-      }
-      return liveCells;
-    }, 0);
+  isEmpty() {
+    return this.tracking.isBoardEmpty();
   }
 
   reset() {

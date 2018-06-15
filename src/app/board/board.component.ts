@@ -138,7 +138,7 @@ export class BoardComponent implements OnInit {
       }
     });
 
-    // these states only happen after you press play and the game cotinues byitself i.e. during the game loop (in controls component)
+    // these states only happen after you press play and the game cotinues by itself i.e. during the game loop (in controls component)
     if (this.hasMoreLife()) {
       this.disabledControls.emit(
         new DisabledControls()

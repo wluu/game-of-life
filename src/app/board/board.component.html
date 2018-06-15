@@ -4,9 +4,9 @@
       <div
       draggable="false"
       [ngStyle]="cellStyle"
-      (mousedown)="mouseDown($event)"
-      (mousemove)="mouseMove($event)"
-      (mouseup)="mouseUp($event)">
+      (mousedown)="onMouseDown($event)"
+      (mousemove)="onMouseMove($event)"
+      (mouseup)="onMouseUp($event)">
         <ng-container *ngIf="debugMode">
           {{ cellStyle['grid-row'] - 1 }},{{ cellStyle['grid-column'] - 1 }}
         </ng-container>

@@ -1,8 +1,8 @@
 <div class="controls-container">
-  <button (click)="play()" [disabled]="disabled.play">Play</button>
-  <button (click)="next()" [disabled]="disabled.next">Next</button>
-  <button (click)="stop()" [disabled]="disabled.stop">Stop</button>
-  <button (click)="clear()" [disabled]="disabled.clear">Clear</button>
+  <button (click)="onClickPlay()" [disabled]="disabled.play">Play</button>
+  <button (click)="onClickNext()" [disabled]="disabled.next">Next</button>
+  <button (click)="onClickStop()" [disabled]="disabled.stop">Stop</button>
+  <button (click)="onClickClear()" [disabled]="disabled.clear">Clear</button>
   <!-- TODO: hook up later -->
   <select [disabled]="disabled.seed">
     <option selected>Select Seed</option>

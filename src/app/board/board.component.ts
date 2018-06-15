@@ -91,7 +91,7 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  mouseDown($event: any) {
+  onMouseDown($event: any) {
     this.isMouseDown = true;
 
     // the grid layout starts index at 1
@@ -108,7 +108,7 @@ export class BoardComponent implements OnInit {
     this.tracking.markCell(curCell);
   }
 
-  mouseMove($event: any) {
+  onMouseMove($event: any) {
     if (this.isMouseDown) {
       const curCell = this.getCellInfoAt($event.target.style.gridRow, $event.target.style.gridColumn);
 
@@ -118,7 +118,7 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  mouseUp($event: any) {
+  onMouseUp($event: any) {
     this.isMouseDown = false;
 
     if (!this.tracking.isBoardEmpty()) {

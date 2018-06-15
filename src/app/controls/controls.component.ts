@@ -26,7 +26,7 @@ export class ControlsComponent implements OnInit {
       .disableClear();
   }
 
-  play() {
+  onClickPlay() {
     this.board.update();
 
     // game loop
@@ -40,7 +40,7 @@ export class ControlsComponent implements OnInit {
       }, 600);
   }
 
-  next() {
+  onClickNext() {
     this.board.update();
 
     // only if we're pressing the next button
@@ -49,12 +49,12 @@ export class ControlsComponent implements OnInit {
     }
   }
 
-  stop() {
+  onClickStop() {
     window.clearInterval(this.loopIntervalId);
     this.disabled = new DisabledControls().disableStop();
   }
 
-  clear() {
+  onClickClear() {
     window.clearInterval(this.loopIntervalId);
 
     this.board.reset();

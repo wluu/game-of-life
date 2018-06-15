@@ -3,7 +3,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { LifeService } from '../services/life.service';
 import { TrackingService } from '../services/tracking.service';
 import { CellInfo } from '../cell-info.interface';
-import { DisabledControls } from '../controls/disabled-controls.factory';
+import { DisabledControls } from '../controls/disabled-controls.class';
 
 import { environment } from '../../environments/environment';
 

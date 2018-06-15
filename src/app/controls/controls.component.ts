@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { DisabledControls } from './disabled-controls.factory';
+import { DisabledControls } from './disabled-controls.class';
 import { BoardComponent } from '../board/board.component';
 
 @Component({

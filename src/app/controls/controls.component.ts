@@ -43,6 +43,7 @@ export class ControlsComponent implements OnInit {
   next() {
     this.board.update();
 
+    // only if we're pressing the next button
     if (this.board.hasMoreLife()) {
       this.disabled = new DisabledControls().disableStop();
     }

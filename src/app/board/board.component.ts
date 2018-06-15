@@ -2,8 +2,8 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 import { LifeService } from '../services/life.service';
 import { TrackingService } from '../services/tracking.service';
-import { CellInfo } from '../model-interfaces/cell-info.interface';
-import { DisabledControls } from '../model-interfaces/disabled-controls.interface';
+import { CellInfo } from '../cell-info.interface';
+import { DisabledControls } from '../controls/disabled-controls.factory';
 
 import { environment } from '../../environments/environment';
 
@@ -107,13 +107,7 @@ export class BoardComponent implements OnInit {
 
     this.tracking.markCell(curCell);
 
-    this.disabledControls.emit({
-      disabledPlay: false,
-      disabledNext: false,
-      disabledStop: true,
-      disabledClear: false,
-      disabledSeed: false
-    });
+    this.disabledControls.emit(new DisabledControls().disableStop());
   }
 
   mouseMove($event: any) {
@@ -145,21 +139,20 @@ export class BoardComponent implements OnInit {
     });
 
     if (this.hasMoreLife()) {
-      this.disabledControls.emit({
-        disabledPlay: true,
-        disabledNext: true,
-        disabledStop: false,
-        disabledClear: false,
-        disabledSeed: true
-      });
+      this.disabledControls.emit(
+        new DisabledControls()
+          .disablePlay()
+          .disableNext()
+          .disableSeed()
+      );
     } else {
-      this.disabledControls.emit({
-        disabledPlay: true,
-        disabledNext: true,
-        disabledStop: true,
-        disabledClear: true,
-        disabledSeed: false
-      });
+      this.disabledControls.emit(
+        new DisabledControls()
+          .disablePlay()
+          .disableNext()
+          .disableStop()
+          .disableClear()
+      );
     }
   }
 

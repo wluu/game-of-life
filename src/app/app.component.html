@@ -1,4 +1,4 @@
 <div class="center-container">
-  <life-board (disabledControls)="controls.handleDisabledStates($event)" #board></life-board>
+  <life-board (disabledControls)="controls.disabled=$event" #board></life-board>
   <life-controls [board]="board" #controls></life-controls>
 </div>

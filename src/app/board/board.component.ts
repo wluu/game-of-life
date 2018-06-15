@@ -24,6 +24,7 @@ export class BoardComponent implements OnInit {
   private boardDimensionStyle: any;
 
   private isMouseDown: boolean;
+  private isShiftDown: boolean;
 
   private debugMode = environment['debug'];
 
@@ -48,9 +49,111 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initBoardStyles();
+    this.initEventListeners();
     this.tracking.initBoard(this.height, this.width);
     this.life.useTrackingService(this.tracking);
+  }
 
+  onMouseDown($event: any) {
+    this.isMouseDown = true;
+
+    // the grid layout starts index at 1
+    const curCell = this.getCellInfoAt($event.target.style.gridRow, $event.target.style.gridColumn);
+
+    const backgroundColor = $event.target.style.backgroundColor;
+    if (!backgroundColor) {
+      curCell.alive = true;
+      this.cellsStyle[curCell.row][curCell.col].backgroundColor = this.cellColor;
+    } else {
+      this.cellsStyle[curCell.row][curCell.col].backgroundColor = '';
+    }
+
+    this.tracking.markCell(curCell);
+  }
+
+  onMouseMove($event: any) {
+    if (this.isMouseDown) {
+      const curCell = this.getCellInfoAt($event.target.style.gridRow, $event.target.style.gridColumn);
+
+      if (this.isShiftDown) {
+        curCell.alive = false;
+        this.cellsStyle[curCell.row][curCell.col].backgroundColor = '';
+      } else {
+        curCell.alive = true;
+        this.cellsStyle[curCell.row][curCell.col].backgroundColor = this.cellColor;
+      }
+
+      this.tracking.markCell(curCell);
+    }
+  }
+
+  onMouseUp($event: any) {
+    this.isMouseDown = false;
+
+    // by default, only disable stop button because we're in the seeding state
+    const dc = new DisabledControls().disableStop();
+
+    // but, if there are no more cells on the board after deselecting the cells, then disable the following buttons:
+    if (this.tracking.isBoardEmpty()) {
+      dc.disablePlay()
+        .disableNext()
+        .disableClear();
+    }
+    this.disabledControls.emit(dc);
+  }
+
+  update() {
+    this.life.applyRules();
+
+    this.life.newGeneration.forEach((c: CellInfo) => {
+      this.tracking.markCell(c);
+
+      // cellsStyle is still linked to the template i.e. can make dynamic changes to the css style
+      if (c.alive) {
+        this.cellsStyle[c.row][c.col].backgroundColor = this.cellColor;
+      } else {
+        this.cellsStyle[c.row][c.col].backgroundColor = '';
+      }
+    });
+
+    // these states only happen after you press play and the game cotinues by itself i.e. during the game loop (in controls component)
+    const dc = new DisabledControls()
+      .disablePlay()
+      .disableNext();
+    if (!this.tracking.isBoardEmpty()) {
+      dc.disableSeed();
+    } else {
+      dc.disableStop()
+        .disableClear();
+    }
+    this.disabledControls.emit(dc);
+  }
+
+  isEmpty() {
+    return this.tracking.isBoardEmpty();
+  }
+
+  reset() {
+    this.cellsStyle.forEach((columns: any[]) => {
+      columns.forEach((c: any) => {
+        c.backgroundColor = '';
+      });
+    });
+
+    this.tracking.initBoard(this.height, this.width);
+    this.life.newGeneration = [];
+  }
+
+  private getCellInfoAt(gridRow: string, gridCol: string): CellInfo {
+    return {
+      row: parseInt(gridRow.split('/')[0].trim(), 10) - 1,
+      col: parseInt(gridCol.split('/')[0].trim(), 10) - 1,
+      alive: false // assume cell is dead
+    };
+  }
+
+  private initBoardStyles() {
     this.boardDimensionStyle = {
       'grid-template-columns': `repeat(${this.width}, 25px)`,
       'grid-template-rows': `repeat(${this.height}, 25px)`
@@ -91,102 +194,18 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  onMouseDown($event: any) {
-    this.isMouseDown = true;
-
-    // the grid layout starts index at 1
-    const curCell = this.getCellInfoAt($event.target.style.gridRow, $event.target.style.gridColumn);
-
-    const backgroundColor = $event.target.style.backgroundColor;
-    if (!backgroundColor) {
-      curCell.alive = true;
-      this.cellsStyle[curCell.row][curCell.col].backgroundColor = this.cellColor;
-    } else {
-      this.cellsStyle[curCell.row][curCell.col].backgroundColor = '';
-    }
-
-    this.tracking.markCell(curCell);
-  }
-
-  onMouseMove($event: any) {
-    if (this.isMouseDown) {
-      const curCell = this.getCellInfoAt($event.target.style.gridRow, $event.target.style.gridColumn);
-
-      curCell.alive = true;
-      this.tracking.markCell(curCell);
-      this.cellsStyle[curCell.row][curCell.col].backgroundColor = this.cellColor;
-    }
-  }
-
-  onMouseUp($event: any) {
-    this.isMouseDown = false;
-
-    if (!this.tracking.isBoardEmpty()) {
-      this.disabledControls.emit(new DisabledControls().disableStop());
-    } else {
-      this.disabledControls.emit(
-        new DisabledControls()
-          .disablePlay()
-          .disableNext()
-          .disableStop()
-          .disableClear()
-      );
-    }
-  }
-
-  update() {
-    this.life.applyRules();
-
-    this.life.newGeneration.forEach((c: CellInfo) => {
-      this.tracking.markCell(c);
-
-      // cellsStyle is still linked to the template i.e. can make dynamic changes to the css style
-      if (c.alive) {
-        this.cellsStyle[c.row][c.col].backgroundColor = this.cellColor;
-      } else {
-        this.cellsStyle[c.row][c.col].backgroundColor = '';
+  private initEventListeners() {
+    window.addEventListener('keydown', ($event: any) => {
+      if ($event.shiftKey) {
+        this.isShiftDown = true;
       }
     });
 
-    // these states only happen after you press play and the game cotinues by itself i.e. during the game loop (in controls component)
-    if (!this.tracking.isBoardEmpty()) {
-      this.disabledControls.emit(
-        new DisabledControls()
-          .disablePlay()
-          .disableNext()
-          .disableSeed()
-      );
-    } else {
-      this.disabledControls.emit(
-        new DisabledControls()
-          .disablePlay()
-          .disableNext()
-          .disableStop()
-          .disableClear()
-      );
-    }
-  }
-
-  isEmpty() {
-    return this.tracking.isBoardEmpty();
-  }
-
-  reset() {
-    this.cellsStyle.forEach((columns: any[]) => {
-      columns.forEach((c: any) => {
-        c.backgroundColor = '';
-      });
+    window.addEventListener('keyup', ($event: any) => {
+      // not too sure why i can't use $event.shiftKey ...
+      if ($event.key === 'Shift') {
+        this.isShiftDown = false;
+      }
     });
-
-    this.tracking.initBoard(this.height, this.width);
-    this.life.newGeneration = [];
-  }
-
-  private getCellInfoAt(gridRow: string, gridCol: string): CellInfo {
-    return {
-      row: parseInt(gridRow.split('/')[0].trim(), 10) - 1,
-      col: parseInt(gridCol.split('/')[0].trim(), 10) - 1,
-      alive: false // assume cell is dead
-    };
   }
 }

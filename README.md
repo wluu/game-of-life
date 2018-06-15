@@ -32,7 +32,8 @@ Going to break this down into smaller chunks:
   - [x] Properly disable and enable the control buttons
     - Including when all cells die
   - [x] Add the next button
-  - [ ] Found bug: if the board is empty by deselecting, the control states are not properly reflected; need to listen on the board component
+  - [ ] Found bug: if the board is empty by deselecting, the control states are not properly reflected; listen on mouseup and check board if there are any live cells
+  - [ ] Found bug: hold down on left click does not de-select cells; should do shift + mousedown
   - [ ] Add the drop-down list to have initial seeds; start with two
     - ~~Make sure it's properly disabled/enabled during the different states~~
 - [x] Look into the cursor change bug

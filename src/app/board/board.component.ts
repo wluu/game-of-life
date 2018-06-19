@@ -62,11 +62,12 @@ export class BoardComponent implements OnInit {
     const curCell = this.getCellInfoAt($event.target.style.gridRow, $event.target.style.gridColumn);
 
     const backgroundColor = $event.target.style.backgroundColor;
-    if (!backgroundColor) {
-      curCell.alive = true;
-      this.cellsStyle[curCell.row][curCell.col].backgroundColor = this.cellColor;
+    if (backgroundColor) {
+      curCell.alive = false;
+      this.unPaintAt(curCell);
     } else {
-      this.cellsStyle[curCell.row][curCell.col].backgroundColor = '';
+      curCell.alive = true;
+      this.paintAt(curCell);
     }
 
     this.tracking.markCell(curCell);
@@ -78,10 +79,10 @@ export class BoardComponent implements OnInit {
 
       if (this.isShiftDown) {
         curCell.alive = false;
-        this.cellsStyle[curCell.row][curCell.col].backgroundColor = '';
+        this.unPaintAt(curCell);
       } else {
         curCell.alive = true;
-        this.cellsStyle[curCell.row][curCell.col].backgroundColor = this.cellColor;
+        this.paintAt(curCell);
       }
 
       this.tracking.markCell(curCell);
@@ -111,23 +112,11 @@ export class BoardComponent implements OnInit {
 
       // cellsStyle is still linked to the template i.e. can make dynamic changes to the css style
       if (c.alive) {
-        this.cellsStyle[c.row][c.col].backgroundColor = this.cellColor;
+        this.paintAt(c);
       } else {
-        this.cellsStyle[c.row][c.col].backgroundColor = '';
+        this.unPaintAt(c);
       }
     });
-
-    // these states only happen after you press play and the game cotinues by itself i.e. during the game loop (in controls component)
-    const dc = new DisabledControls()
-      .disablePlay()
-      .disableNext();
-    if (!this.tracking.isBoardEmpty()) {
-      dc.disableSeed();
-    } else {
-      dc.disableStop()
-        .disableClear();
-    }
-    this.disabledControls.emit(dc);
   }
 
   isEmpty() {
@@ -151,6 +140,14 @@ export class BoardComponent implements OnInit {
       col: parseInt(gridCol.split('/')[0].trim(), 10) - 1,
       alive: false // assume cell is dead
     };
+  }
+
+  private paintAt(c: CellInfo) {
+    this.cellsStyle[c.row][c.col].backgroundColor = this.cellColor;
+  }
+
+  private unPaintAt(c: CellInfo) {
+    this.cellsStyle[c.row][c.col].backgroundColor = '';
   }
 
   private initBoardStyles() {

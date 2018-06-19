@@ -29,24 +29,43 @@ export class ControlsComponent implements OnInit {
   onClickPlay() {
     this.board.update();
 
+    let dc = new DisabledControls().disablePlay().disableNext();
+    if (this.board.isEmpty()) {
+      dc.disableStop().disableClear();
+    } else {
+      dc.disableSeed();
+    }
+    this.disabled = dc;
+
     // game loop
     this.loopIntervalId = window.setInterval.call(this,
       () => {
-        if (!this.board.isEmpty()) {
-          this.board.update();
-        } else {
+        dc = new DisabledControls().disablePlay().disableNext();
+
+        if (this.board.isEmpty()) {
           window.clearInterval(this.loopIntervalId);
+          dc.disableStop().disableClear();
+        } else {
+          this.board.update();
+          dc.disableSeed();
         }
+
+        this.disabled = dc;
       }, 600);
   }
 
   onClickNext() {
     this.board.update();
 
-    // only if we're pressing the next button
-    if (!this.board.isEmpty()) {
-      this.disabled = new DisabledControls().disableStop();
+    const dc = new DisabledControls().disableStop();
+
+    if (this.board.isEmpty()) {
+      dc.disablePlay()
+        .disableNext()
+        .disableClear();
     }
+
+    this.disabled = dc;
   }
 
   onClickStop() {

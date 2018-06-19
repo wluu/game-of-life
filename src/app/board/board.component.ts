@@ -89,7 +89,7 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  onMouseUp($event: any) {
+  onMouseUp() {
     this.isMouseDown = false;
 
     // by default, only disable stop button because we're in the seeding state
@@ -192,13 +192,13 @@ export class BoardComponent implements OnInit {
   }
 
   private initEventListeners() {
-    window.addEventListener('keydown', ($event: any) => {
+    window.addEventListener('keydown', ($event: KeyboardEvent) => {
       if ($event.shiftKey) {
         this.isShiftDown = true;
       }
     });
 
-    window.addEventListener('keyup', ($event: any) => {
+    window.addEventListener('keyup', ($event: KeyboardEvent) => {
       // not too sure why i can't use $event.shiftKey ...
       if ($event.key === 'Shift') {
         this.isShiftDown = false;

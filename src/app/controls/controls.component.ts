@@ -16,7 +16,17 @@ export class ControlsComponent implements OnInit {
 
   private loopIntervalId: number;
 
-  constructor() { }
+  private initialSeeds: string[];
+
+  constructor() {
+    this.initialSeeds = [
+      'Blinker',
+      'Pulsar',
+      'Pentadecathlon',
+      'Glider',
+      'LWSS'
+    ];
+  }
 
   ngOnInit() {
     this.disabled = new DisabledControls()

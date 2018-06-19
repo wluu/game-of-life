@@ -34,7 +34,8 @@ Going to break this down into smaller chunks:
   - [x] Add the next button
   - [x] Found bug: if the board is empty by deselecting, the control states are not properly reflected; listen on mouseup and check board if there are any live cells
   - [x] Found bug: hold down on left click does not de-select cells; should do shift + mousedown
-  - [ ] Add the drop-down list to have initial seeds; start with two
+  - [ ] Add the drop-down list to have initial seeds: blinker, pulsar, pentadecathlon, glider, and lightweight spaceship (from wiki)
+    - Read up on https://angular.io/guide/forms
     - ~~Make sure it's properly disabled/enabled during the different states~~
 - [x] Look into the cursor change bug
 - [ ] Add the help icon

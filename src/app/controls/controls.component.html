@@ -5,6 +5,7 @@
   <button (click)="onClickClear()" [disabled]="disabled.clear">Clear</button>
   <!-- TODO: hook up later -->
   <select [disabled]="disabled.seed">
-    <option selected>Select Seed</option>
+    <option selected>Select seed</option>
+    <option *ngFor="let initSeed of initialSeeds" [value]="initSeed">{{initSeed}}</option>
   </select>
 </div>

@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 
 import { DisabledControls } from './disabled-controls.class';
 import { BoardComponent } from '../board/board.component';
+import { InitSeed } from '../init-seed.enum';
 
 @Component({
   selector: 'life-controls',
@@ -16,15 +17,15 @@ export class ControlsComponent implements OnInit {
 
   private loopIntervalId: number;
 
-  private initialSeeds: string[];
+  private initialSeeds: InitSeed[];
 
   constructor() {
     this.initialSeeds = [
-      'Blinker',
-      'Pulsar',
-      'Pentadecathlon',
-      'Glider',
-      'LWSS'
+      InitSeed.Blinker,
+      InitSeed.Pulsar,
+      InitSeed.Pentadecathlon,
+      InitSeed.Glider,
+      InitSeed.LWSS
     ];
   }
 
@@ -93,5 +94,10 @@ export class ControlsComponent implements OnInit {
       .disableNext()
       .disableStop()
       .disableClear();
+  }
+
+  onSelectChange($event: any) {
+    this.disabled = new DisabledControls().disableStop();
+    this.board.populateSeed(<InitSeed>$event.target.value);
   }
 }

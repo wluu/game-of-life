@@ -1,12 +1,10 @@
 <div class="board-container" [ngStyle]="boardDimensionStyle">
   <ng-container *ngFor="let row of cellsStyle">
     <ng-container *ngFor="let cellStyle of row">
-      <div
-      draggable="false"
-      [ngStyle]="cellStyle"
-      (mousedown)="onMouseDown($event)"
-      (mousemove)="onMouseMove($event)"
-      (mouseup)="onMouseUp()">
+      <div draggable="false" [ngStyle]="cellStyle"
+        (mousedown)="onMouseDown($event)"
+        (mousemove)="onMouseMove($event)"
+        (mouseup)="onMouseUp()">
         <ng-container *ngIf="debugMode">
           {{ cellStyle['grid-row'] - 1 }},{{ cellStyle['grid-column'] - 1 }}
         </ng-container>

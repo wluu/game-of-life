@@ -1,11 +1,12 @@
 <div class="controls-container">
-  <button (click)="onClickPlay()" [disabled]="disabled.play">Play</button>
-  <button (click)="onClickNext()" [disabled]="disabled.next">Next</button>
-  <button (click)="onClickStop()" [disabled]="disabled.stop">Stop</button>
-  <button (click)="onClickClear()" [disabled]="disabled.clear">Clear</button>
-  <!-- TODO: hook up later -->
-  <select [disabled]="disabled.seed">
-    <option selected>Select seed</option>
-    <option *ngFor="let initSeed of initialSeeds" [value]="initSeed">{{initSeed}}</option>
-  </select>
+  <button [disabled]="disabled.play" (click)="onClickPlay()">Play</button>
+  <button [disabled]="disabled.next" (click)="onClickNext()">Next</button>
+  <button [disabled]="disabled.stop" (click)="onClickStop()">Stop</button>
+  <button [disabled]="disabled.clear" (click)="onClickClear(); seedForm.reset()">Clear</button>
+  <form  #seedForm>
+    <select [disabled]="disabled.seed" (change)="onSelectChange($event)">
+      <option [value]="none" selected>Select seed</option>
+      <option *ngFor="let seed of initialSeeds" [value]="seed">{{seed}}</option>
+    </select>
+  </form>
 </div>

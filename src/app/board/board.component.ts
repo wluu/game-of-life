@@ -2,8 +2,10 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 import { LifeService } from '../services/life.service';
 import { TrackingService } from '../services/tracking.service';
+
 import { CellInfo } from '../cell-info.interface';
 import { DisabledControls } from '../controls/disabled-controls.class';
+import { InitSeed } from '../init-seed.enum';
 
 import { environment } from '../../environments/environment';
 
@@ -132,6 +134,32 @@ export class BoardComponent implements OnInit {
 
     this.tracking.initBoard(this.height, this.width);
     this.life.newGeneration = [];
+  }
+
+  populateSeed(seed: InitSeed) {
+    this.reset();
+
+    switch (seed) {
+      case InitSeed.Blinker:
+        console.log('blinker');
+      break;
+
+      case InitSeed.Pulsar:
+        console.log('pulsar');
+      break;
+
+      case InitSeed.Pentadecathlon:
+        console.log('pentadecathlon');
+      break;
+
+      case InitSeed.Glider:
+        console.log('glider');
+      break;
+
+      case InitSeed.LWSS:
+        console.log('lwss');
+      break;
+    }
   }
 
   private getCellInfoAt(gridRow: string, gridCol: string): CellInfo {

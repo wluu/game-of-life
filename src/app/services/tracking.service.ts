@@ -25,7 +25,7 @@ export class TrackingService {
     }
   }
 
-  markCell(cell: CellInfo) {
+  mark(cell: CellInfo) {
     this.board[cell.row][cell.col] = cell.alive;
   }
 

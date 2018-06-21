@@ -5,7 +5,7 @@ import { TrackingService } from '../services/tracking.service';
 
 import { CellInfo } from '../cell-info.interface';
 import { DisabledControls } from '../controls/disabled-controls.class';
-import { InitSeed } from '../init-seed.enum';
+import { Seed, InitSeed } from '../seed';
 
 import { environment } from '../../environments/environment';
 
@@ -72,7 +72,7 @@ export class BoardComponent implements OnInit {
       this.paintAt(curCell);
     }
 
-    this.tracking.markCell(curCell);
+    this.tracking.mark(curCell);
   }
 
   onMouseMove($event: any) {
@@ -87,7 +87,7 @@ export class BoardComponent implements OnInit {
         this.paintAt(curCell);
       }
 
-      this.tracking.markCell(curCell);
+      this.tracking.mark(curCell);
     }
   }
 
@@ -110,7 +110,7 @@ export class BoardComponent implements OnInit {
     this.life.applyRules();
 
     this.life.newGeneration.forEach((c: CellInfo) => {
-      this.tracking.markCell(c);
+      this.tracking.mark(c);
 
       // cellsStyle is still linked to the template i.e. can make dynamic changes to the css style
       if (c.alive) {
@@ -136,30 +136,37 @@ export class BoardComponent implements OnInit {
     this.life.newGeneration = [];
   }
 
-  populateSeed(seed: InitSeed) {
+  populateSeed(seed: Seed) {
     this.reset();
 
+    let whichSeed = [];
+
     switch (seed) {
-      case InitSeed.Blinker:
-        console.log('blinker');
+      case Seed.Blinker:
+        whichSeed = InitSeed.blinker();
       break;
 
-      case InitSeed.Pulsar:
-        console.log('pulsar');
+      case Seed.Pulsar:
+        whichSeed = InitSeed.pulsar();
       break;
 
-      case InitSeed.Pentadecathlon:
-        console.log('pentadecathlon');
+      case Seed.Pentadecathlon:
+        whichSeed = InitSeed.pentadecathlon();
       break;
 
-      case InitSeed.Glider:
-        console.log('glider');
+      case Seed.Glider:
+        whichSeed = InitSeed.glider();
       break;
 
-      case InitSeed.LWSS:
-        console.log('lwss');
+      case Seed.LWSS:
+        whichSeed = InitSeed.lwss();
       break;
     }
+
+    whichSeed.forEach((cell: CellInfo) => {
+      this.paintAt(cell);
+      this.tracking.mark(cell);
+    });
   }
 
   private getCellInfoAt(gridRow: string, gridCol: string): CellInfo {

@@ -110,7 +110,7 @@ export class BoardComponent implements OnInit {
   disableMouseEvents() {
     this.cellsStyle.forEach((columns: any[]) => {
       columns.forEach((cell: any) => {
-        cell['pointer-events'] = 'none';
+        cell.pointerEvents = 'none';
       });
     });
   }
@@ -118,7 +118,7 @@ export class BoardComponent implements OnInit {
   enableMouseEvents() {
     this.cellsStyle.forEach((columns: any[]) => {
       columns.forEach((cell: any) => {
-        cell['pointer-events'] = 'auto';
+        cell.pointerEvents = 'auto';
       });
     });
   }
@@ -144,8 +144,9 @@ export class BoardComponent implements OnInit {
 
   reset() {
     this.cellsStyle.forEach((columns: any[]) => {
-      columns.forEach((c: any) => {
-        c.backgroundColor = '';
+      columns.forEach((cell: any) => {
+        cell.backgroundColor = '';
+        cell.pointerEvents = 'auto';
       });
     });
 

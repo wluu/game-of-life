@@ -93,7 +93,6 @@ export class ControlsComponent implements OnInit {
     window.clearInterval(this.loopIntervalId);
 
     this.board.reset();
-    this.board.enableMouseEvents();
 
     this.disabled = new DisabledControls()
       .disablePlay()

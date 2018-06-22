@@ -1,11 +1,12 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
+import { DisabledControls } from '../controls/disabled-controls.class';
+
+import { CellInfo } from '../misc/cell-info.interface';
+import { Seed, InitSeed } from '../misc/seed';
+
 import { LifeService } from '../services/life.service';
 import { TrackingService } from '../services/tracking.service';
-
-import { CellInfo } from '../cell-info.interface';
-import { DisabledControls } from '../controls/disabled-controls.class';
-import { Seed, InitSeed } from '../seed';
 
 import { environment } from '../../environments/environment';
 

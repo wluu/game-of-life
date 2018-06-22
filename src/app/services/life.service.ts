@@ -2,10 +2,10 @@
 
 import { Injectable } from '@angular/core';
 
-import { TrackingService } from './tracking.service';
-import { CellInfo } from '../cell-info.interface';
+import { CellInfo } from '../misc/cell-info.interface';
+import { debug } from '../misc/debug.logger';
 
-import { debug } from '../debug.logger';
+import { TrackingService } from './tracking.service';
 
 @Injectable()
 export class LifeService {

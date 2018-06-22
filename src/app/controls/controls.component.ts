@@ -1,8 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { DisabledControls } from './disabled-controls.class';
 import { BoardComponent } from '../board/board.component';
-import { Seed } from '../seed';
+
+import { Seed } from '../misc/seed';
+
+import { DisabledControls } from './disabled-controls.class';
 
 @Component({
   selector: 'life-controls',

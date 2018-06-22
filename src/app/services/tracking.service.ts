@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { CellInfo } from '../cell-info.interface';
+import { CellInfo } from '../misc/cell-info.interface';
 
 @Injectable()
 export class TrackingService {

@@ -2,3 +2,38 @@
   <life-board (disabledControls)="controls.disabled=$event" #board></life-board>
   <life-controls [board]="board" #controls></life-controls>
 </div>
+
+<!-- should center and bold the title -->
+<div>How to Run</div>
+<ol>
+  <li>Left-click (or left-click + hold down + drag) on the board to add new cells to the board.</li>
+  <li>Or, select an initial set of seed cells from the "Select seed" dropdown list to populate the board.</li>
+  Note:<!-- bold Note: -->  This will clear the board of any initial seed cells.
+  <li>Click on the "Play" button to run the game automatically. Or, click on the "Next" button to see one generation per cycle.</li>
+</ol>
+
+<!-- should center and bold the title -->
+<div>More on Controls</div>
+<ul>
+  <li>To remove a cell, click on the cell again. To remove multiple cells, hold down shift key + hold down on left-click + drag.</li>
+  <li>"Clear" button will clear the board. You can clear the board when the game is running.</li>
+  <li>"Stop" button will pause the game. In this state, you can add more cells to the board.</li>
+  <li>You cannot add more cells when the game is running.</li>
+</ul>
+
+<!-- Should center and bold the title -->
+<div>Rules</div>
+<ol>
+  <li>Any live cell with fewer than two live neighbors dies, as if by under population.</li>
+  <li>Any live cell with two or three live neighbors lives on to the next generation.</li>
+  <li>Any live cell with more than three live neighbors dies, as if by overpopulation.</li>
+  <li>Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.</li>
+</ol>
+<p>Source:<!-- italics --><a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Rules">Conway's Rules</a></p>
+
+<!-- Should center and bold the title -->
+<div>Notes</div>
+<ul>
+  <li>One difference between this game and Conway's is that in his game, the board's lengths are infinite. So in this game, when a cell reaches the boarder, it will die.</li>
+  <li>The game "ends" when all cells die off.</li>
+</ul>

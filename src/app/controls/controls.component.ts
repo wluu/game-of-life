@@ -41,6 +41,7 @@ export class ControlsComponent implements OnInit {
 
   onClickPlay() {
     this.board.update();
+    this.board.disableMouseEvents();
 
     let dc = new DisabledControls().disablePlay().disableNext();
     if (this.board.isEmpty()) {
@@ -58,6 +59,7 @@ export class ControlsComponent implements OnInit {
         if (this.board.isEmpty()) {
           window.clearInterval(this.loopIntervalId);
           dc.disableStop().disableClear();
+          this.board.enableMouseEvents();
         } else {
           this.board.update();
           dc.disableSeed();
@@ -84,12 +86,14 @@ export class ControlsComponent implements OnInit {
   onClickStop() {
     window.clearInterval(this.loopIntervalId);
     this.disabled = new DisabledControls().disableStop();
+    this.board.enableMouseEvents();
   }
 
   onClickClear() {
     window.clearInterval(this.loopIntervalId);
 
     this.board.reset();
+    this.board.enableMouseEvents();
 
     this.disabled = new DisabledControls()
       .disablePlay()

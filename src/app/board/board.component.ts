@@ -107,6 +107,22 @@ export class BoardComponent implements OnInit {
     this.disabledControls.emit(dc);
   }
 
+  disableMouseEvents() {
+    this.cellsStyle.forEach((columns: any[]) => {
+      columns.forEach((cell: any) => {
+        cell['pointer-events'] = 'none';
+      });
+    });
+  }
+
+  enableMouseEvents() {
+    this.cellsStyle.forEach((columns: any[]) => {
+      columns.forEach((cell: any) => {
+        cell['pointer-events'] = 'auto';
+      });
+    });
+  }
+
   update() {
     this.life.applyRules();
 
@@ -170,6 +186,14 @@ export class BoardComponent implements OnInit {
     });
   }
 
+  private paintAt(c: CellInfo) {
+    this.cellsStyle[c.row][c.col].backgroundColor = this.cellColor;
+  }
+
+  private unPaintAt(c: CellInfo) {
+    this.cellsStyle[c.row][c.col].backgroundColor = '';
+  }
+
   private getCellInfoAt(gridRow: string, gridCol: string): CellInfo {
     return {
       row: parseInt(gridRow.split('/')[0].trim(), 10) - 1,
@@ -178,12 +202,19 @@ export class BoardComponent implements OnInit {
     };
   }
 
-  private paintAt(c: CellInfo) {
-    this.cellsStyle[c.row][c.col].backgroundColor = this.cellColor;
-  }
+  private initEventListeners() {
+    window.addEventListener('keydown', ($event: KeyboardEvent) => {
+      if ($event.shiftKey) {
+        this.isShiftDown = true;
+      }
+    });
 
-  private unPaintAt(c: CellInfo) {
-    this.cellsStyle[c.row][c.col].backgroundColor = '';
+    window.addEventListener('keyup', ($event: KeyboardEvent) => {
+      // not too sure why i can't use $event.shiftKey ...
+      if ($event.key === 'Shift') {
+        this.isShiftDown = false;
+      }
+    });
   }
 
   private initBoardStyles() {
@@ -225,20 +256,5 @@ export class BoardComponent implements OnInit {
         }
       }
     }
-  }
-
-  private initEventListeners() {
-    window.addEventListener('keydown', ($event: KeyboardEvent) => {
-      if ($event.shiftKey) {
-        this.isShiftDown = true;
-      }
-    });
-
-    window.addEventListener('keyup', ($event: KeyboardEvent) => {
-      // not too sure why i can't use $event.shiftKey ...
-      if ($event.key === 'Shift') {
-        this.isShiftDown = false;
-      }
-    });
   }
 }

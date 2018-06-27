@@ -1,4 +1,4 @@
-.center-container {
+.main-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -6,7 +6,21 @@
   cursor: default; /* i think this helps prevent the cursor from changing into a text selector */
 }
 
-life-controls {
+.main-container life-controls {
   width: 75%;
   margin-top: 1%;
+}
+
+.how-to-container {
+  display: block;
+  width: 84%;
+  margin-top: 2%;
+}
+
+.how-to-container .title {
+  font-weight: bold;
+}
+.how-to-container ul,
+.how-to-container ol {
+  line-height: 25px;
 }

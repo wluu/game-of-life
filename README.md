@@ -38,6 +38,6 @@ Going to break this down into smaller chunks:
     - Read up on https://angular.io/guide/forms
     - ~~Make sure it's properly disabled/enabled during the different states~~
 - [x] Look into the cursor change bug
-- [ ] ~~Add the help icon~~ Add how-to guide at the bottom
+- [x] ~~Add the help icon~~ Add how-to guide at the bottom
 - [ ] Check performance/memory
 - [ ] Material design???

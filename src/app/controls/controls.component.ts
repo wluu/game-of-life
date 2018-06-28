@@ -4,7 +4,7 @@ import { BoardComponent } from '../board/board.component';
 
 import { Seed } from '../misc/seed';
 
-import { DisabledControls } from './disabled-controls.class';
+import { ControlStates } from './control-states.class';
 
 @Component({
   selector: 'life-controls',
@@ -15,7 +15,7 @@ export class ControlsComponent implements OnInit {
 
   @Input() board: BoardComponent;
 
-  private disabled: DisabledControls;
+  private controlStates: ControlStates;
 
   private loopIntervalId: number;
 
@@ -32,7 +32,7 @@ export class ControlsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.disabled = new DisabledControls()
+    this.controlStates = new ControlStates()
       .disablePlay()
       .disableNext()
       .disableStop()
@@ -43,49 +43,58 @@ export class ControlsComponent implements OnInit {
     this.board.update();
     this.board.disableMouseEvents();
 
-    let dc = new DisabledControls().disablePlay().disableNext();
+    let cs = new ControlStates().disablePlay().disableNext();
+
     if (this.board.isEmpty()) {
-      dc.disableStop().disableClear();
+      cs.disableStop()
+        .disableClear()
+        .resetSeed();
     } else {
-      dc.disableSeed();
+      cs.disableSeed();
     }
-    this.disabled = dc;
+
+    this.controlStates = cs;
 
     // game loop
     this.loopIntervalId = window.setInterval.call(this,
       () => {
-        dc = new DisabledControls().disablePlay().disableNext();
+        cs = new ControlStates().disablePlay().disableNext();
 
         if (this.board.isEmpty()) {
           window.clearInterval(this.loopIntervalId);
-          dc.disableStop().disableClear();
+
+          cs.disableStop()
+            .disableClear()
+            .resetSeed();
+
           this.board.enableMouseEvents();
         } else {
           this.board.update();
-          dc.disableSeed();
+          cs.disableSeed();
         }
 
-        this.disabled = dc;
+        this.controlStates = cs;
       }, 600);
   }
 
   onClickNext() {
     this.board.update();
 
-    const dc = new DisabledControls().disableStop();
+    const cs = new ControlStates().disableStop();
 
     if (this.board.isEmpty()) {
-      dc.disablePlay()
+      cs.disablePlay()
         .disableNext()
-        .disableClear();
+        .disableClear()
+        .resetSeed();
     }
 
-    this.disabled = dc;
+    this.controlStates = cs;
   }
 
   onClickStop() {
     window.clearInterval(this.loopIntervalId);
-    this.disabled = new DisabledControls().disableStop();
+    this.controlStates = new ControlStates().disableStop();
     this.board.enableMouseEvents();
   }
 
@@ -94,15 +103,20 @@ export class ControlsComponent implements OnInit {
 
     this.board.reset();
 
-    this.disabled = new DisabledControls()
+    this.controlStates = new ControlStates()
       .disablePlay()
       .disableNext()
       .disableStop()
-      .disableClear();
+      .disableClear()
+      .resetSeed();
+  }
+
+  onControlStates($event: ControlStates) {
+    this.controlStates = $event;
   }
 
   onSelectChange($event: any) {
-    this.disabled = new DisabledControls().disableStop();
+    this.controlStates = new ControlStates().disableStop();
     this.board.populateSeed(<Seed>$event.target.value);
   }
 }

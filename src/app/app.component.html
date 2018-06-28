@@ -1,5 +1,5 @@
 <div class="main-container">
-  <life-board (disabledControls)="controls.disabled=$event" #board></life-board>
+  <life-board (controlStates)="controls.onControlStates($event)" #board></life-board>
   <life-controls [board]="board" #controls></life-controls>
   <div class="how-to-container">
     <div class="title">How to Run</div>
@@ -27,7 +27,7 @@
     <div class="title">Notes</div>
     <ul>
       <li>
-        One difference between this game and Conway's is that in his game, the board's lengths are infinite. 
+        One difference between this game and Conway's is that in his game, the board's lengths are infinite.
         In this game, when cells reach the border, the rules will only apply to the cells before the border.
       </li>
       <li>The game "ends" when all cells die off.</li>

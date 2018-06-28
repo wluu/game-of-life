@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
-import { DisabledControls } from '../controls/disabled-controls.class';
+import { ControlStates } from '../controls/control-states.class';
 
 import { CellInfo } from '../misc/cell-info.interface';
 import { Seed, InitSeed } from '../misc/seed';
@@ -18,7 +18,7 @@ import { environment } from '../../environments/environment';
 })
 export class BoardComponent implements OnInit {
 
-  @Output() disabledControls = new EventEmitter<DisabledControls>();
+  @Output() controlStates = new EventEmitter<ControlStates>();
 
   private width: number;
   private height: number;
@@ -96,15 +96,17 @@ export class BoardComponent implements OnInit {
     this.isMouseDown = false;
 
     // by default, only disable stop button because we're in the seeding state
-    const dc = new DisabledControls().disableStop();
+    const cs = new ControlStates().disableStop();
 
     // but, if there are no more cells on the board after deselecting the cells, then disable the following buttons:
     if (this.tracking.isBoardEmpty()) {
-      dc.disablePlay()
+      cs.disablePlay()
         .disableNext()
-        .disableClear();
+        .disableClear()
+        .resetSeed();
     }
-    this.disabledControls.emit(dc);
+
+    this.controlStates.emit(cs);
   }
 
   disableMouseEvents() {

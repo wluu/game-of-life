@@ -37,7 +37,7 @@ export class BoardComponent implements OnInit {
   ) {
     this.width = 50;
     this.height = 30;
-    this.cellColor = '#FFDF46';
+    this.cellColor = '#fbf165';
 
     /*
       NOTE:

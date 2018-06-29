@@ -40,4 +40,6 @@ Going to break this down into smaller chunks:
 - [x] Look into the cursor change bug
 - [x] ~~Add the help icon~~ Add how-to guide at the bottom
 - [ ] Check performance/memory
+  - There might be some memory leaks according to https://developers.google.com/web/tools/chrome-devtools/memory-problems/
+  - But, it looks like the memory leaks for DOM nodes and JS heaps are growing at a slow rate.
 - [ ] Material design???

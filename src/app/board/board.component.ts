@@ -38,17 +38,6 @@ export class BoardComponent implements OnInit {
     this.width = 50;
     this.height = 30;
     this.cellColor = '#fbf165';
-
-    /*
-      NOTE:
-      dynamic style changes to the cell should be applied through this.cellsStyle.
-      applying style changes through $event.target.style will not update the template's style correctly.
-      e.g. click on a cell, apply rules, click on same cell, ui does not get updated.
-
-      i suspect angular is enforcing some rule to prevent me to write to the style via the DOM event object.
-      or, i've missed something in the angular docs or i don't fully understand how anuglar works ... which is the most likely case.
-    */
-    this.cellsStyle = [];
   }
 
   ngOnInit() {
@@ -225,6 +214,17 @@ export class BoardComponent implements OnInit {
       'grid-template-columns': `repeat(${this.width}, 25px)`,
       'grid-template-rows': `repeat(${this.height}, 25px)`
     };
+
+    /*
+      NOTE:
+      dynamic style changes to the cell should be applied through this.cellsStyle.
+      applying style changes through $event.target.style will not update the template's style correctly.
+      e.g. click on a cell, apply rules, click on same cell, ui does not get updated.
+
+      i suspect angular is enforcing some rule to prevent me to write to the style via the DOM event object.
+      or, i've missed something in the angular docs or i don't fully understand how anuglar works ... which is the most likely case.
+    */
+    this.cellsStyle = [];
 
     for (let row = 0; row < this.height; row++) {
       this.cellsStyle[row] = new Array(this.width);

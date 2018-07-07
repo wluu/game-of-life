@@ -24,7 +24,7 @@ Going to break this down into smaller chunks:
 - [x] Will need to create some form of game loop so the cells appear to be moving
 - [x] Create a class for the debugging logs and the debugging text on the board
 - [x] Re-evaluate the state flows and layout design
-- [ ] Add the controls (minimalistic level)
+- [x] Add the controls (minimalistic level)
   - [x] Added the basic layout
   - [x] Hook up the buttons to the board component
   - [x] Add the ability to click and hold to select the cells
@@ -39,7 +39,21 @@ Going to break this down into smaller chunks:
     - ~~Make sure it's properly disabled/enabled during the different states~~
 - [x] Look into the cursor change bug
 - [x] ~~Add the help icon~~ Add how-to guide at the bottom
-- [ ] Check performance/memory
+- [x] Check performance/memory
   - There might be some memory leaks according to https://developers.google.com/web/tools/chrome-devtools/memory-problems/
-  - But, it looks like the memory leaks for DOM nodes and JS heaps are growing at a slow rate.
+  - But, it looks like the memory leaks for DOM nodes and JS heaps are growing at a slow rate; was monitoring Chrome's task manager.
+    - Used Chrome's Performance tool to isolate the memory leaks.
+    - But, was not able to isolate/discern the memory leak with Memory Heap snapshot and Memory Allocation instrumentation on timeline.
+    - The **general** steps I used to find the memory leak:
+      1. Loaded web app (locally)
+      2. Used Pulsar as initial seed
+      3. Clicked Play to allow the game to run
+      4. Every 10 - 15 seconds, cleared the board with Clear button
+      5. Repeated steps 2 to 4 three or four times
+    - Based on the Performance tool, my guess was that the memory leak was occurring when I clear the board. Specifically in `ControlsComponent.onClickClear()`, which will call `BoardComponent.reset()`.
+    - However, I remembered from the Angular documentation that it was good practice to only do simple initialization in the component's constructor. `BoardComponent.cellsStyle` and `TrackingService.board`, to a degree, were not simple initializations. They were large matrices that dynamically changed.
+    - Putting those two properties in `ngOnInit()` ~~seemed to have solved the memory leak~~ didn't seem to do much.
+      - In constructor: ![Before](./performance/constructor.png "Before")
+      - In `ngOnInit()`: ![After](./performance/ngoninit.png "After")
+    - Hmm, as long as it doesn't stutter, I think it's okay for now.
 - [ ] Material design???

@@ -9,14 +9,12 @@ export class TrackingService {
   totalCols: number;
   board: boolean[][];
 
-  constructor() {
-    this.board = [];
-  }
-
   // initializing the tracking board
   initBoard(rows: number, cols: number) {
     this.totalRows = rows;
     this.totalCols = cols;
+
+    this.board = [];
 
     for (let r = 0; r < this.totalRows; r++) {
       for (let c = 0; c < this.totalCols; c++) {

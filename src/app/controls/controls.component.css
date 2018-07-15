@@ -2,3 +2,15 @@
   display: flex;
   justify-content: space-evenly;
 }
+
+button {
+  width: 15%;
+}
+
+form {
+  width: 15%;
+}
+
+select {
+  width: 100%;
+}

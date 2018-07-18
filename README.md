@@ -56,10 +56,11 @@ Going to break this down into smaller chunks:
       - In constructor: ![Before](./performance/constructor.png "Before")
       - In `ngOnInit()`: ![After](./performance/ngoninit.png "After")
     - Hmm, as long as it doesn't stutter, I think it's okay for now.
-- [ ] Need to make the web app dynamically proportional
+- [x] Need to make the web app dynamically proportional
   - ~~https://css-tricks.com/scaled-proportional-blocks-with-css-and-javascript/~~
   - ~~Can use the `transform: scale()` CSS property. It looks like it only works when `display: block`, which the body element is automatically set.~~
   - Hmm, `transform: scale()` doesn't seem to be the way. Can't figure out the correct scaling value.
   - But: https://alistapart.com/article/responsive-web-design
+    - Yep, making a web app responsive is complicated. I've done as much as I can endure. 
 - [ ] Material design???
   - https://material.angular.io/guides

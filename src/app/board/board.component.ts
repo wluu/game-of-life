@@ -230,28 +230,11 @@ export class BoardComponent implements OnInit {
       this.cellsStyle[row] = new Array(this.width);
 
       for (let col = 0; col < this.width; col++) {
-        let borderStyle = '';
-
-        // creating cell borders from left to right on each row; starting point (0, 0)
-        if (row === 0 && col === 0) {
-          // starting at (0, 0), all the borders should be groove
-          borderStyle = 'groove';
-        } else if (row === 0) {
-          // after (0, 0), all cells on the first row will have:
-          borderStyle = 'groove groove groove none';
-        } else if (col === 0) {
-          // moving to the next rows, the cells in the first column will have:
-          borderStyle = 'none groove groove groove';
-        } else {
-          // and the cells after the after column will have:
-          borderStyle = 'none groove groove none';
-        }
-
         this.cellsStyle[row][col] = {
           // index starts at 1 for grid layout
           'grid-row': row + 1,
           'grid-column': col + 1,
-          'border-style': borderStyle
+          'border-style': 'groove',
         };
 
         if (this.debugMode) {

@@ -1,5 +1,7 @@
-# game-of-life WIP
+# game-of-life
 Conway's Game of Life
+
+https://wluu.github.io/game-of-life/
 
 # My Notes
 

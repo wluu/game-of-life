@@ -20,11 +20,12 @@ export class BoardComponent implements OnInit {
 
   @Output() controlStates = new EventEmitter<ControlStates>();
 
+  public cellsStyle: any[][];
+  public boardDimensionStyle: any;
+
   private width: number;
   private height: number;
   private cellColor: string;
-  private cellsStyle: any[][];
-  private boardDimensionStyle: any;
 
   private isMouseDown: boolean;
   private isShiftDown: boolean;

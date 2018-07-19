@@ -15,11 +15,10 @@ export class ControlsComponent implements OnInit {
 
   @Input() board: BoardComponent;
 
-  private controlStates: ControlStates;
+  public controlStates: ControlStates;
+  public initialSeeds: Seed[];
 
   private loopIntervalId: number;
-
-  private initialSeeds: Seed[];
 
   constructor() {
     this.initialSeeds = [

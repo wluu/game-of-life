@@ -6,7 +6,7 @@
   <!-- seed-form class is used in control-states.class -->
   <form class="seed-form">
     <select [disabled]="controlStates.disabledSeed" (change)="onSelectChange($event)">
-      <option [value]="none" selected>Select seed</option>
+      <option [value]="" selected>Select seed</option>
       <option *ngFor="let seed of initialSeeds" [value]="seed">{{seed}}</option>
     </select>
   </form>

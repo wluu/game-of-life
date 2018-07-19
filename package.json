@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "debug-mode": "ng serve -c debug"
+    "debug-mode": "ng serve -c debug",
+    "deploy": "ng build --aot --prod --output-path ./docs --base-href game-of-life"
   },
   "dependencies": {
     "@angular/cli": "^6.0.8",
